@@ -22,6 +22,6 @@ from boards.views import Boards, BoardList
 # as_view()를 써야 cbv 방식을 fbv 처럼 쓸 수 있따.
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('user/', include(user.urls)),
-    path('board/', include('boards.urls')),  
+    path('user/', include('user.urls')),
+    path('board/', include('boards.urls')),
 ]
