@@ -23,7 +23,7 @@ from django.http import HttpResponse
 class Boards(View):
     def get(self, request):
         form = BoardForm()
-        return render(request, 'board/create_board.html', {'form': form})
+        return render(request, 'board/board_create.html', {'form': form})
 
     def post(self, request):
         form = BoardForm(request.POST)
@@ -64,7 +64,7 @@ def board_detail(request, board_id):
 def board_edit(request, board_id):
     board = Board.objects.get(board_id=board_id)
     if request.method == "POST":
-        board.title = request.POST['title'] # 오류
+        board.title = request.POST['title']  # 오류
         board.content = request.POST['content']
         # board.board_id = request.POST['id']
 
@@ -72,4 +72,4 @@ def board_edit(request, board_id):
         return redirect('board_detail', board_id=board.board_id)
 
     else:
-        return render(request, 'board/board_edit.html', {'board':board})
+        return render(request, 'board/board_edit.html', {'board': board})
