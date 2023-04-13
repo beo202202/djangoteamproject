@@ -6,12 +6,15 @@
 </head>
 
 <body>
-    <form action="/board/" method="POST">
+    <h1>작성</h1>
+    <form action="/board/" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <br>
         <input type="text" id="title" name="title" placeholder="제목" required />
         <br>
         <input type="text" id="content" name="content" placeholder="내용" required />
+        <br>
+        <input type="file" name="img" id="img" accept="image/*">
         <br>
         <input type="submit" value="작성" />
     </form>

@@ -2,8 +2,6 @@ from django.urls import path
 from . import views
 from boards import views
 from boards.views import Boards, BoardList
-from django.conf.urls.static import static
-from django.conf import settings
 
 urlpatterns = [
     path('list/', BoardList.as_view(), name='board-list'),

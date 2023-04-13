@@ -26,13 +26,18 @@ class Boards(View):
         return render(request, 'board/board_create.html', {'form': form})
 
     def post(self, request):
-        form = BoardForm(request.POST)
+        form = BoardForm(request.POST, request.FILES)
         if form.is_valid():
-            board = form.save(commit=False)
-            # board.author
+            title = request.POST['title']
+            content = request.POST['content']
+            # post_author = 유저id
+            img = request.FILES.get('img')  # 이미지 주소 받아오기
+            board = Board.objects.create(
+                title=title, content=content, img=img)
             board.save()
 
-            return redirect('/board/list/')
+            return redirect('/board/list/')  # 상세보기로 가기
+        # return render(request, '/board_create.html')
 
     def delete(self, request, board_id):
         Board.objects.get(board_id=board_id).delete()
@@ -45,9 +50,6 @@ class BoardList(View):
             boards = Board.objects.all().order_by('-updated_at')
             return render(request, 'board/board_list.html', {'boards': boards})
         return redirect('/board/')
-
-
-# 게시글 이미지는 나중에 넣기? 관련 뷰가 있던 것 같음
 
 
 # django에서 제공하는 detailview를 활용함
@@ -64,10 +66,12 @@ def board_detail(request, board_id):
 def board_edit(request, board_id):
     board = Board.objects.get(board_id=board_id)
     if request.method == "POST":
-        board.title = request.POST['title']  # 오류
+        board.title = request.POST['title']
         board.content = request.POST['content']
         # board.board_id = request.POST['id']
-
+        board.img = request.FILES.get('img')
+        if img:  # 이미지가 업로드되었을 경우
+            board.img = img
         board.save()
         return redirect('board_detail', board_id=board.board_id)
 
