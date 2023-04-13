@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Board</title>
+</head>
+
+<body>
+<form action="{% url 'board_edit' board_id=board.board_id %}" method="GET">
+    {% csrf_token %}
+    <p>{{ board.board_id }}</p>
+    <h1>{{ board.title }}</h1>
+    <h2>{{ board.content }}</h2>
+    <input type="submit" role="button" value="수정">
+</form>
+
+{% load method_override %}
+<form action="/board/{{ board.board_id }}/" method="POST">
+    {% csrf_token %}
+
+    {% method_override 'DELETE' %}
+    <input type="submit" role="button" value="삭제">
+</form>
+
+
+</body>

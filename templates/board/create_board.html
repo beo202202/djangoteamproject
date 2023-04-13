@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Board</title>
+</head>
+
+<body>
+    <form action="/board/" method="POST">
+        {% csrf_token %}
+        <br>
+        <input type="text" id="title" name="title" placeholder="제목" required />
+        <br>
+        <input type="text" id="content" name="content" placeholder="내용" required />
+        <br>
+        <input type="submit" value="작성" />
+    </form>
+
+</body>
