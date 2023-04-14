@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+import re
 
 
 def home(request):
@@ -26,6 +27,10 @@ def sign_up_view(request):
         password2 = request.POST.get('password2', None)
         email = request.POST.get('email', '')
         bio = request.POST.get('bio', '')
+        
+        email_check = re.compile('^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+        if not email_check.match(email) :
+            return render(request, 'signup.html', {'error': 'email을 형식에 맞춰 작성해 주세요.'})
 
         if username == None or password == None:
             return render(request, 'signup.html', {'error': '올바른 값을 입력해주세요.'})
