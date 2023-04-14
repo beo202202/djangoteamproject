@@ -2,6 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <title>Board</title>
 </head>
 
@@ -14,7 +15,7 @@
         <h2>{{ board.content }}</h2>
         {% if board.img %}
         <br>
-        <img src="{{ board.img.url }}" width="500" alt="{{ board.img.url }}">
+        <img src="{{ board.img.url }}" width="100" alt="{{ board.img.url }}">
         {% endif %}
         <br>
         <input type="submit" role="button" value="수정">

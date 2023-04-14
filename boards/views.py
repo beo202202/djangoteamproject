@@ -8,6 +8,7 @@ from .models import Board
 from django.urls import reverse_lazy, reverse
 from .forms import BoardForm
 from django.http import HttpResponse
+import os
 
 
 # Create your views here.
@@ -21,6 +22,7 @@ from django.http import HttpResponse
 # 그래서 APIView를 사용
 
 class Boards(View):
+
     def get(self, request):
         form = BoardForm()
         return render(request, 'board/board_create.html', {'form': form})
@@ -42,6 +44,7 @@ class Boards(View):
     def delete(self, request, board_id):
         Board.objects.get(board_id=board_id).delete()
         return redirect('/board/list/')
+        # 이미지는 media에서도 삭제됨 휴..
 
 
 class BoardList(View):
@@ -66,13 +69,15 @@ def board_detail(request, board_id):
 def board_edit(request, board_id):
     board = Board.objects.get(board_id=board_id)
     if request.method == "POST":
+        # board.board_id = request.POST['id']
         board.title = request.POST['title']
         board.content = request.POST['content']
-        # board.board_id = request.POST['id']
-        board.img = request.FILES.get('img')
-        if img:  # 이미지가 업로드되었을 경우
-            board.img = img
+        # board.img = request.FILES['img']
+        if 'img' in request.FILES:  # 새로운 이미지가 업로드된 경우
+            board.img.delete()          # 기존 이미지 삭제
+            board.img = request.FILES.get('img')    # 새로운 이미지 저장
         board.save()
+
         return redirect('board_detail', board_id=board.board_id)
 
     else:

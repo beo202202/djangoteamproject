@@ -1,4 +1,5 @@
 from django.db import models
+# from django_cleanup import cleanup
 
 
 class Board(models.Model):
@@ -12,3 +13,7 @@ class Board(models.Model):
 
     class Meta:
         db_table = 'board'
+
+    # def delete(self, *args, **kargs):
+    #     os.remove(os.path.join(settings.MEDIA_ROOT, self.upload_file.name))
+    #     super(Board, self).delete(*args, **kargs)

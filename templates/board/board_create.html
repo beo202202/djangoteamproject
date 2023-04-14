@@ -2,7 +2,22 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <title>Board</title>
+
+    <script>
+        function previewImage(input) {
+            var preview = document.getElementById('preview');
+            preview.style.display = "block";
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.setAttribute('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -14,8 +29,9 @@
         <br>
         <input type="text" id="content" name="content" placeholder="내용" required />
         <br>
-        <input type="file" name="img" id="img" accept="image/*">
+        <input type="file" name="img" id="img" accept="image/*" onchange="previewImage(this);">
         <br>
+        <img id="preview" src="#" alt="Image preview" style="display:none; width:100px; max-height:100px;">
         <input type="submit" value="작성" />
     </form>
 
