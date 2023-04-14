@@ -3,7 +3,6 @@ from . import views
 from boards import views
 from boards.views import Boards, BoardList
 
-
 urlpatterns = [
     path('list/', BoardList.as_view(), name='board-list'),
     path('', Boards.as_view(), name='board-create'),
