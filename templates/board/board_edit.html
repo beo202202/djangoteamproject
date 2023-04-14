@@ -2,15 +2,29 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Edit Board</title>
+    <title>Board</title>
 </head>
+
 <body>
-    <form method="POST" action= "{% url 'board_edit' board_id=board.board_id %}">
+    <h1>수정</h1>
+    <form method="POST" action="{% url 'board_edit' board_id=board.board_id %}">
+        {{ board.board_id }}
         {% csrf_token %}
         <label for="title">제목</label>
+        <br>
         <input type="text" name="title" id="title" value="{{ board.title }}"><br>
+        <br>
+        <input type="file" name="img" id="img" accept="image/*">
+        <br>
+        {% if board.img %}
+        <!-- 여기서 img 그게 빈값이면 고대로 이걸 쓰면 되고 둘다 값이 있다면 img 를 가져오면되지 -->
+        <img src="{{ board.img.url }}" width="500" alt="{{ board.img.url }}">
+        <br>
+        {% endif %}
         <label for="content">내용</label>
+        <br>
         <textarea name="content" id="content">{{ board.content }}</textarea><br>
+        <br>
         <button type="submit">수정완료</button>
     </form>
 
