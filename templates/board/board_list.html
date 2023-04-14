@@ -16,6 +16,7 @@
     <article>
         <header>{{ board.title }}</header>
         {{ board.content }}
+        <footer><p style="text-align:left">글쓴이: {{ board.user }}</p>
         <footer>작성 시간: {{ board.created_at|timesince }} 전
             <button onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'">상세보기</button>
 
