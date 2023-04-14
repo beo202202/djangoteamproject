@@ -41,6 +41,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER	 # 응답 메일 관련 설정
 INSTALLED_APPS = [
     'user',
     'boards',
+    'my_page',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

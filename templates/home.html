@@ -25,5 +25,12 @@
             </form>
         </div>
     </nav>
+    {% for user in all_user %}
+
+        <h5 class="card-title">{{ user.username }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ user.email }}</h6>
+        <a href="/my-page/{{ user.id }}" class="card-link">[프로필 보기]</a>
+
+    {% endfor %}
 </body>
 </html>

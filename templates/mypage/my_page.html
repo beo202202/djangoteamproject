@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+</head>
+<body>
+<div class="card-body">
+    <h5 class="card-title">{{ click_user.username }}</h5>
+    <p class="card-text"> {{ click_user.bio }}</p>
+    {% if show_my_board == True %}
+        <a href="/mypage/profile_modify" class="card-link">[프로필 수정]</a>
+    {% endif %}
+
+
+</div>
+
+{% for board in board_list %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ board.title }}</h5>
+            <p class="card-text">
+                등록 시간 {{ board.created_at }} , 수정 시간 {{ board.updated_at }}
+            </p>
+            {% if show_my_board == True %}
+                <a href="/board/edit/{{ board.board_id }}" class="card-link">[수정]</a>
+                
+
+                {% load method_override %}
+                <form action="/board/{{ board.board_id }}/" method="POST">
+                    {% csrf_token %}
+        
+                    {% method_override 'DELETE' %}
+                    <input type="submit" role="button" value="삭제">
+                </form>
+            {% endif %}
+    </div>
+{% endfor %}
+
+</body>
+</html>
