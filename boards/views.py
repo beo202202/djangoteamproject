@@ -19,7 +19,7 @@ from django.http import HttpResponse
 # 각 HTTP 메서드(get,post,put,delete 등)에 대한 기본적인 구현을 제공
 # 이를 오버라이드하여 원하는 기능을 구현 가능
 # 그래서 APIView를 사용
-@login_required
+
 class Boards(View):
     def get(self, request):
         form = BoardForm()
@@ -29,7 +29,7 @@ class Boards(View):
         form = BoardForm(request.POST)
         if form.is_valid():
             board = form.save(commit=False)
-            board.user = request.user
+            # board.author
             board.save()
 
             return redirect('/board/list/')
@@ -60,7 +60,7 @@ def board_detail(request, board_id):
     return render(request, 'board/board_detail.html', {'board': board})
 
 
-@login_required()
+# @login_required()
 def board_edit(request, board_id):
     board = Board.objects.get(board_id=board_id)
     if request.method == "POST":
