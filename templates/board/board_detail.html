@@ -6,12 +6,9 @@
 </head>
 
 <body>
-    {% if request.user == board.user %}
-    
 <form action="{% url 'board_edit' board_id=board.board_id %}" method="GET">
     {% csrf_token %}
     <p>{{ board.board_id }}</p>
-    <p>{{ board.author}}</p>
     <h1>{{ board.title }}</h1>
     <h2>{{ board.content }}</h2>
     <input type="submit" role="button" value="수정">
@@ -24,12 +21,6 @@
     {% method_override 'DELETE' %}
     <input type="submit" role="button" value="삭제">
 </form>
-{% else %}
-    <p>{{ board.board_id }}</p>
-    <p>{{ board.author}}</p>
-    <h1>{{ board.title }}</h1>
-    <h2>{{ board.content }}</h2>
-{% endif %}
 
 
 </body>
