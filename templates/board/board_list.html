@@ -7,10 +7,16 @@
 </head>
 
 <body>
-    {# {% load method_override %}#}
     <h1>게시판</h1>
-
+    {% if request.user.is_authenticated %}
     <a href="/board/">작성하기</a>
+    <a href="/mypage/{{user.id}}">마이페이지</a>
+    <a href="/user/logout">로그아웃</a>
+    {% else %}
+    <a href="/user/sign-in">로그인</a>
+    <a href="/user/sign-up">회원가입</a>
+    {% endif %}
+
 
     {% for board in boards %}
     <article>
@@ -23,13 +29,6 @@
         <footer><p style="text-align:left">글쓴이: {{ board.author }}</p>
             작성 시간: {{ board.created_at|timesince }} 전
             <button onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'">상세보기</button>
-
-            {# <form action="/board/{{ board.board_id }}/" method="POST">#}
-                {# {% csrf_token %}#}
-                {##}
-                {# {% method_override 'DELETE' %}#}
-                {# <input type="submit" role="button" value="삭제">#}
-                {# </form>#}
 
         </footer>
     </article>
