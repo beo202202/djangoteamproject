@@ -22,7 +22,7 @@ from django.conf import settings
 
 # as_view()를 써야 cbv 방식을 fbv 처럼 쓸 수 있따.
 urlpatterns = [
-    path('',views.home,),
+    path('', views.home, name='home'),
     path('admin/', admin.site.urls),
     path('user/', include('user.urls', namespace='user')),
     path('mypage/', include('my_page.urls')),

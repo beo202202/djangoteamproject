@@ -1,5 +1,5 @@
-from django.shortcuts import redirect
+from django.shortcuts import render
 
 
 def home(request):
-    return redirect('/board/list/')
+    return render(request, 'home.html')
