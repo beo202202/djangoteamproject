@@ -8,6 +8,7 @@
 
 <body>
     <h1>상세보기</h1>
+    {% if board.author == request.user %}
     <form action="{% url 'board_edit' board_id=board.board_id %}" method="GET">
         {% csrf_token %}
         <h1>{{ board.title }}</h1>
@@ -28,6 +29,14 @@
         {% method_override 'DELETE' %}
         <input type="submit" role="button" value="삭제">
     </form>
-
+    {% else %}
+        <h1>{{ board.title }}</h1>
+        <br>
+        <h2>{{ board.content }}</h2>
+        {% if board.img %}
+        <br>
+        <img src="{{ board.img.url }}" width="100" alt="{{ board.img.url }}">
+        {% endif %}
+    {% endif%}
 
 </body>

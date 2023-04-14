@@ -30,16 +30,24 @@ class Boards(View):
     def post(self, request):
         form = BoardForm(request.POST, request.FILES)
         if form.is_valid():
-            title = request.POST['title']
-            content = request.POST['content']
-            # post_author = 유저id
-            img = request.FILES.get('img')  # 이미지 주소 받아오기
-            board = Board.objects.create(
-                title=title, content=content, img=img)
+            board = form.save(commit=False)
+            board.author = request.user
+            # board.img = request.FILES.get('img')    # 이미지 주소 받아오기
             board.save()
 
+            # 위 아래는 똑같은 결과값이 된다.
+            # author = request.user
+            # title = request.POST['title']
+            # content = request.POST['content']
+            # img = request.FILES.get('img')  
+            # board = Board.objects.create(author=author,
+            #     title=title, content=content, img=img)
+            # board.save()
+        
             return redirect('/board/list/')  # 상세보기로 가기
-        # return render(request, '/board_create.html')
+            # return render(request, '/board_create.html')
+        
+        return redirect('오류 폐기처리 페이지')
 
     def delete(self, request, board_id):
         Board.objects.get(board_id=board_id).delete()
