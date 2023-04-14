@@ -2,7 +2,16 @@ from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from django.http import HttpResponse
 import re
+
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
+from django.core.mail import EmailMessage
+from .tokens import account_activation_token
+from django.utils.encoding import force_bytes, force_str
+
 
 
 def home(request):
@@ -44,8 +53,27 @@ def sign_up_view(request):
             else:
                 user = get_user_model().objects.create(username=username, email=email, bio=bio)
                 user.set_password(password)
+                user.is_active = False
                 user.save()
-                return redirect('/user/sign-in')
+
+                
+                current_site = get_current_site(request) 
+                message = render_to_string('activation_email.html', {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': account_activation_token.make_token(user),
+                })
+                mail_title = "계정 활성화 확인 이메일"
+                mail_to = request.POST["email"]
+                email = EmailMessage(mail_title, message, to=[mail_to])
+                email.send()
+                return HttpResponse(
+                    '<div style="font-size: 40px; width: 100%; height:100%; display:flex; text-align:center; '
+                    'justify-content: center; align-items: center;">'
+                    '입력하신 이메일<span>로 인증 링크가 전송되었습니다.</span>'
+                    '</div>'            
+                )            
 
 
 def sign_in_view(request):
@@ -73,3 +101,19 @@ def sign_in_view(request):
 def logout(request):
     auth.logout(request)
     return redirect('/user/')
+
+
+def activate(request, uidb64, token) :
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = get_user_model().objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, get_user_model().DoesNotExsit):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        auth.login(request, user)
+        return redirect("/user/")
+    else:
+        return render(request, 'home.html', {'error' : '계정 활성화 오류'})
