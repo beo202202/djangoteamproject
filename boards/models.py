@@ -1,15 +1,17 @@
 from django.db import models
+# from django.contrib.auth import get_user_model
 # from django_cleanup import cleanup
-
+from user.models import UserModel
 
 class Board(models.Model):
-    # user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(UserModel(), on_delete=models.CASCADE)   
     board_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=50)
     img = models.ImageField(null=True, upload_to="", blank=True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
 
     class Meta:
         db_table = 'board'

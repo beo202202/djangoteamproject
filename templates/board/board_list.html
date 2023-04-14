@@ -20,7 +20,8 @@
         <br>
         {% endif %}
         {{ board.content }}
-        <footer>작성 시간: {{ board.created_at|timesince }} 전
+        <footer><p style="text-align:left">글쓴이: {{ board.author }}</p>
+            작성 시간: {{ board.created_at|timesince }} 전
             <button onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'">상세보기</button>
 
             {# <form action="/board/{{ board.board_id }}/" method="POST">#}
