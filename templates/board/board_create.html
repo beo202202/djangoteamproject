@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <title>Board</title>
+
     <script>
         function previewImage(input) {
             var preview = document.getElementById('preview');
@@ -20,27 +21,18 @@
 </head>
 
 <body>
-    <h1>수정</h1>
-    <form method="POST" action="{% url 'board_edit' board_id=board.board_id %}" enctype="multipart/form-data">
-        {{ board.board_id }}
+    <h1>작성</h1>
+    <form action="/board/" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <label for="title">제목</label>
         <br>
-        <input type="text" name="title" id="title" value="{{ board.title }}">
+        <input type="text" id="title" name="title" placeholder="제목" required />
         <br>
-        <label for="content">내용</label>
+        <input type="text" id="content" name="content" placeholder="내용" required />
         <br>
-        <textarea name="content" id="content">{{ board.content }}</textarea>
-        <br>
-        {% if board.img %}
-        <img id="preview" src="{{ board.img.url }}" alt="Image preview" style="width:100px; max-height:100px;">
-        <br>
-        {% else %}
-        <img id="preview" alt="Image preview" style="display:none; width:100px; max-height:100px;">
-        <br>
-        {% endif %}
         <input type="file" name="img" id="img" accept="image/*" onchange="previewImage(this);">
         <br>
-        <button type="submit">수정완료</button>
+        <img id="preview" src="#" alt="Image preview" style="display:none; width:100px; max-height:100px;">
+        <input type="submit" value="작성" />
     </form>
+
 </body>

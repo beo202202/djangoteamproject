@@ -18,10 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from boards import views
 from boards.views import Boards, BoardList
+from django.conf.urls.static import static
+from django.conf import settings
 
 # as_view()를 써야 cbv 방식을 fbv 처럼 쓸 수 있따.
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('user.urls', namespace='user')),
     path('board/', include('boards.urls')),
-]
+] + static(settings.MEDIA_URL,
+           document_root=settings.MEDIA_ROOT)  # media 경로

@@ -39,6 +39,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER	 # 응답 메일 관련 설정
 # Application definition
 
 INSTALLED_APPS = [
+    'user',
     'boards',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,9 +47,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'method_override',
 
-    'user',
+    'django_cleanup.apps.CleanupConfig',   # 중요!! 무결성을 위해 제일 밑
 ]
 
 MIDDLEWARE = [
@@ -131,3 +133,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
