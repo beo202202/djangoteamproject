@@ -14,7 +14,7 @@
                 <br>
                 <input type="text" id="content" name="content" placeholder="내용" required />
                 <br>
-                <input type="file" name="img" id="img" accept="image/*" onchange="previewImage(this);">
+                <input type="file" name="img" id="img" accept="image/*" onchange="checkFileSize(this);">
                 <br>
                 <img id="preview" src="#" alt="Image preview" style="display:none; width:100px; max-height:100px;">
                 <input type="submit" value="작성" />
