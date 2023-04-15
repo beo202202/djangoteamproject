@@ -16,11 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-<<<<<<< HEAD
-from boards.views import Boards, BoardList
-=======
 from . import views
->>>>>>> 87352fa8dd8f289ff9b98ad26887c2b3cc18f370
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -31,5 +27,4 @@ urlpatterns = [
     path('user/', include('user.urls', namespace='user')),
     path('mypage/', include('my_page.urls')),
     path('board/', include('boards.urls')),
-] + static(settings.MEDIA_URL,
-           document_root=settings.MEDIA_ROOT)  # media 경로
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # media 경로

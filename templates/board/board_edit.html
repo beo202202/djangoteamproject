@@ -2,11 +2,11 @@
 {% block content %}
 
 <div class="container">
+    {% block title %}
+    <h2 class="flex-center">수정</h2>
+    {% endblock %}
     <div class="flex-center">
         <article style="width:500px;">
-            {% block title %}
-            <h2 class="flex-center">수정</h2>
-            {% endblock %}
             <form method="POST" action="{% url 'board_edit' board_id=board.board_id %}" enctype="multipart/form-data">
                 {{ board.board_id }}
                 {% csrf_token %}
@@ -32,3 +32,5 @@
         </article>
     </div>
 </div>
+
+{% endblock content%}

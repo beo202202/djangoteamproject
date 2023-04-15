@@ -2,11 +2,11 @@
 {% block content %}
 
 <div class="container">
+    {% block title %}
+    <h2 class="flex-center">작성</h2>
+    {% endblock %}
     <div class="flex-center">
         <article style="width:500px;">
-            {% block title %}
-                <h2 class="flex-center">작성</h2>
-            {% endblock %}    
             <form action="/board/" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <br>
