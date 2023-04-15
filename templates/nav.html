@@ -7,6 +7,8 @@
   <title>
     Maple Survivors</title>
   <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 
   <style>
     #canvas {
@@ -62,6 +64,11 @@
     }
   </style>
   <script>
+    function goToDetail() {
+      var button = document.getElementById("detailButton");
+      button.click();
+      }
+      
     function checkFileSize(input) {
       if (input.files && input.files[0]) {
         var fileSize = input.files[0].size;
@@ -93,10 +100,10 @@
 </head>
 
 <body>
-  <!-- 나중에 넣기로... -->
-  <!-- <div id="background"> <canvas id="canvas"></canvas> </div> -->
-  <!-- <script type="text/javascript" src="{% static 'js/blossom2.js' %}" data-static-url="{% static 'imgs/' %}"></script> -->
-  <!-- 나중에 넣기로... -->
+  <!-- <div id="background">
+    <canvas id="canvas"></canvas>
+  </div>
+  <script type="text/javascript" src="{% static 'js/maple.js' %}" data-static-url="{% static 'imgs/' %}"></script> -->
   <nav>
     <ul>
       {% if not user.is_authenticated %}
@@ -142,8 +149,8 @@
       </li>
     </ul>
     <ul>
-      <a href="#" aria-busy="true"></a>
-      <li>"깃허브이미지와 주소 넣자"</li>
+      <a href="https://github.com/Songjimyung/djangoteamproject" aria-busy="true"></a>
+      <li><img src="{% static 'img/GitHub.png' %}"></li>
     </ul>
   </nav>
 

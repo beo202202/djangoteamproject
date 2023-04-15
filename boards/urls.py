@@ -9,4 +9,5 @@ urlpatterns = [
     path('<int:board_id>/', Boards.as_view(), name='board-delete'),
     path('detail/<int:board_id>/', views.board_detail, name='board_detail'),
     path('edit/<int:board_id>/', views.board_edit, name='board_edit'),
+    path('<int:board_id>/likes/', views.likes, name='likes'),    
 ]

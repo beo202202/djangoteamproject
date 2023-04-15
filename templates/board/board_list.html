@@ -6,36 +6,69 @@
 {% endblock %}
 
 <div class="container2">
-  <div class="board-list">123</div>
+  <div class="board-list">
+    <div class="flex-center">
+      {% if user.is_authenticated %}
+      <div>프로필 보여주기</div>
+      {% else %}
+      <div>로그인하시오</div>
+      {% endif %}
+    </div>
+  </div>
   <div class="board-list" style="width:600px;">
 
-    {% for board in boards %}
+    
     <div class="flex-center">
       <div class="board-main">
-        <div class="board-info">
-          <mark>{{ board.author }}</mark>님이 작성한 글입니다.
-        </div>
-        <div class="board-content" style="cursor: pointer;" onclick="goToDetail()">
+        
+        
+        <div name="글쓰기창">      
           <article style="width:500px;">
-            <header>{{ board.title }}</header>
-            {% if board.img %}
-            <img src=" {{ board.img.url }}" width="100" alt="{{ board.img.url }}">
-            <br>
-            {% endif %}
-            {{ board.content }}
-            <footer>
-              작성 시간:
-              {{ board.created_at|timesince }}
-              전
-              <button id="detailButton" onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'"
-                style="display: none;">상세보기</button>
-            </footer>
+            <form action="/board/" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <br>
+              <input type="text" id="title" name="title" placeholder="제목" required />
+              <br>
+              <input type="text" id="content" name="content" placeholder="내용" required />
+              <br>
+              <input type="file" name="img" id="img" accept="image/*" onchange="checkFileSize(this);">
+              <br>
+              <img id="preview" src="#" alt="Image preview" style="display:none; width:100px; max-height:100px;">
+              <input type="submit" value="작성" />
+            </form>
           </article>
         </div>
+        
+        
+        {% for board in boards %}
+        <div name="글리스트">
+          <div class="board-info">
+            <mark>{{ board.author }}</mark>님이 작성한 글입니다.
+          </div>
+          <div class="board-content">
+            <article style="width:500px;" onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'">
+              <header>{{ board.title }}</header>
+              <div style="cursor: pointer;">{% if board.img %}
+                <img src=" {{ board.img.url }}" width="100" alt="{{ board.img.url }}">
+                <br>
+                {% endif %}
+                {{ board.content }}
+              </div>
+              <footer>
+                  <span style="float: left;"><i class="fa-solid fa-heart"></i>{{ board.likes_count }}</span>
+                  <span style="float: right;">작성 시간: {{ board.created_at|timesince }} 전</span>
+                  <br>
+              </footer>
+              </article>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
       </div>
     </div>
-    {% endfor %}
-  </div>
   <div class="board-list">321</div>
 </div>
 {% endblock content%}
+
+
