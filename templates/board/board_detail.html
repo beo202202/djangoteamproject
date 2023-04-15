@@ -1,9 +1,9 @@
 {% extends 'nav.html' %}
 {% block content %}
 
-<div class="container">
+  <div class="container">
     {% block title %}
-    <h2 class="flex-center">상세보기</h2>
+      <h2 class="flex-center">상세보기</h2>
     {% endblock %}
     <div class="flex-center">
         <article style="width:500px;">
@@ -28,8 +28,32 @@
                 </form>
             </div>
             {% endif%}
-        </article>
-    </div>
-</div>
 
-{% endblock content%}
+        </article>
+      </div>
+    </div>
+
+    <hr>
+    {% if comments %}
+      <ul>
+        {% for comment in comments %}
+          <li>
+            {{ comment.content }}
+            <p>{{ comment.username }}
+              |
+              {{ comment.created_at }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>등록된 댓글이 없습니다.</p>
+    {% endif %}
+
+    <h3>댓글 작성</h3> 
+    <form method="POST" action="/comment/{{ board.board_id }}/"> 
+      {% csrf_token %} 
+      <label for="comment">내용:</label> 
+      <textarea name="content" id="comment"></textarea><br> 
+      <input type="submit" value="댓글 작성"> 
+    </form>
+     {% endblock content %}

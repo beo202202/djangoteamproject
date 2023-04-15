@@ -12,9 +12,16 @@ class Board(models.Model):
     content = models.TextField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    likes = models.ManyToManyField(UserModel, related_name='likes', blank=True)
+    likes_count = models.PositiveIntegerField(default=0)
 
     class Meta:
         db_table = 'board'
+        
+    #좋아요 저장
+    def update_likes_count(self):
+        self.likes_count = self.likes.count()
+        self.save()
 
     # def delete(self, *args, **kargs):
     #     os.remove(os.path.join(settings.MEDIA_ROOT, self.upload_file.name))

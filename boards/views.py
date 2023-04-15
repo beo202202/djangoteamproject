@@ -10,6 +10,7 @@ from .forms import BoardForm
 from django.http import HttpResponse
 import os
 from PIL import Image
+from comments.models import Comment
 
 
 # Create your views here.
@@ -66,6 +67,7 @@ class BoardList(View):
     def get(self, request):
         if request.method == 'GET':
             boards = Board.objects.all().order_by('-updated_at')
+            
             return render(request, 'board/board_list.html', {'boards': boards})
         return redirect('/board/')
 
@@ -77,7 +79,9 @@ class BoardList(View):
 
 def board_detail(request, board_id):
     board = Board.objects.get(board_id=board_id)
-    return render(request, 'board/board_detail.html', {'board': board})
+    comments = Comment.objects.filter(board=board)
+    context = {'board': board, 'comments': comments}
+    return render(request, 'board/board_detail.html', context)
 
 
 # @login_required()
@@ -106,3 +110,20 @@ def board_edit(request, board_id):
 
     else:
         return render(request, 'board/board_edit.html', {'board': board})
+
+
+@login_required
+def likes(request, board_id):
+    board = Board.objects.get(board_id=board_id)
+
+    if request.method == 'GET':
+        if board.likes.filter(id=request.user.id).exists():
+            board.likes.remove(request.user)
+            board.update_likes_count()
+        else:
+            board.likes.add(request.user)
+            board.update_likes_count()
+
+        return redirect('board_detail', board_id=board_id)
+    context = {'board': board, 'likes_count': board.likes_count}
+    return render(request, 'board/board_detail.html', context)

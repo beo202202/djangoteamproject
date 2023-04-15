@@ -24,6 +24,7 @@
               {% csrf_token %}
               <textarea id="content" name="content" cols="30" rows="5" placeholder="내용" maxlength="200"
                 required></textarea>
+
               <br>
               <input type="file" name="img" id="img" accept="image/*" onchange="checkFileSize(this);">
               <br>
@@ -33,6 +34,7 @@
           </article>
         </div>
         {% endif %}
+
 
         {% for board in boards %}
         <div name="글리스트">
@@ -58,10 +60,11 @@
           </div>
         </div>
         {% endfor %}
+
       </div>
 
     </div>
-  </div>
+
   <div class="board-list">321</div>
 </div>
 {% endblock content%}
