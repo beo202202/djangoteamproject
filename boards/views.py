@@ -84,10 +84,7 @@ def board_detail(request, board_id):
 def board_edit(request, board_id):
     board = Board.objects.get(board_id=board_id)
     if request.method == "POST":
-        # board.board_id = request.POST['id']
-        board.title = request.POST['title']
         board.content = request.POST['content']
-        # board.img = request.FILES['img']
         if 'img' in request.FILES:  # 새로운 이미지가 업로드된 경우
             board.img.delete()          # 기존 이미지 삭제
             board.img = request.FILES.get('img')    # 새로운 이미지 저장

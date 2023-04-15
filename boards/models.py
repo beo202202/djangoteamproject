@@ -7,9 +7,9 @@ from user.models import UserModel
 class Board(models.Model):
     author = models.ForeignKey(UserModel(), on_delete=models.CASCADE)
     board_id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=50)
+    # title = models.CharField(max_length=50)
     img = models.FileField(null=True, upload_to="", blank=True)
-    content = models.TextField()
+    content = models.TextField(max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
