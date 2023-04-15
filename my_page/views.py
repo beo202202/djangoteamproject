@@ -16,7 +16,8 @@ def my_page(request, id):
         show_my_board = True
     else:
         show_my_board = False
-    return render(request, 'mypage/my_page.html', {'click_user': click_user,'board_list': board_list,'show_my_board': show_my_board})
+    return render(request, 'mypage/my_page.html', {'click_user': click_user, 'board_list': board_list, 'show_my_board': show_my_board})
+
 
 # 팔로워 활용 가능
 # @login_required
@@ -45,3 +46,4 @@ def update(request):
             'form': form,
         }
         return render(request, 'mypage/profile_modify.html', context)
+

@@ -9,6 +9,8 @@ from django.urls import reverse_lazy, reverse
 from .forms import BoardForm
 from django.http import HttpResponse
 import os
+from PIL import Image
+from comments.models import Comment
 
 
 # Create your views here.
@@ -33,21 +35,27 @@ class Boards(View):
             board = form.save(commit=False)
             board.author = request.user
             # board.img = request.FILES.get('img')    # 이미지 주소 받아오기
+
+            # 이미지 파일 압축하기
+            if board.img:
+                image_path = board.img.path
+                if os.path.exists(image_path):
+                    compressed_image_path = image_path.replace(
+                        ".jpg", "_compressed.jpg")
+                    image = Image.open(image_path)
+                    image = image.convert('RGB')
+                    image.save(compressed_image_path,
+                               optimize=True, quality=70)
+                    board.img.name = compressed_image_path.split("/")[-1]
+
             board.save()
 
-            # 위 아래는 똑같은 결과값이 된다.
-            # author = request.user
-            # title = request.POST['title']
-            # content = request.POST['content']
-            # img = request.FILES.get('img')  
-            # board = Board.objects.create(author=author,
-            #     title=title, content=content, img=img)
-            # board.save()
-        
             return redirect('/board/list/')  # 상세보기로 가기
             # return render(request, '/board_create.html')
-        
-        return redirect('오류 폐기처리 페이지')
+        # except Exception as e:
+        #     return render(request, 'error.html', {'error_message': str(e)})
+
+        # return render(request, 'error.html')
 
     def delete(self, request, board_id):
         Board.objects.get(board_id=board_id).delete()
@@ -59,6 +67,7 @@ class BoardList(View):
     def get(self, request):
         if request.method == 'GET':
             boards = Board.objects.all().order_by('-updated_at')
+            
             return render(request, 'board/board_list.html', {'boards': boards})
         return redirect('/board/')
 
@@ -70,7 +79,9 @@ class BoardList(View):
 
 def board_detail(request, board_id):
     board = Board.objects.get(board_id=board_id)
-    return render(request, 'board/board_detail.html', {'board': board})
+    comments = Comment.objects.filter(board=board)
+    context = {'board': board, 'comments': comments}
+    return render(request, 'board/board_detail.html', context)
 
 
 # @login_required()
@@ -84,9 +95,38 @@ def board_edit(request, board_id):
         if 'img' in request.FILES:  # 새로운 이미지가 업로드된 경우
             board.img.delete()          # 기존 이미지 삭제
             board.img = request.FILES.get('img')    # 새로운 이미지 저장
+
+            # 이미지 파일 압축하기
+            image_path = board.img.path
+            compressed_image_path = image_path.replace(
+                ".jpg", "_compressed.jpg")
+            image = Image.open(image_path)
+            image = image.convert('RGB')
+            image.save(compressed_image_path, optimize=True, quality=70)
+            board.img.name = compressed_image_path.split("/")[-1]
+
+            board.save()
+
         board.save()
 
         return redirect('board_detail', board_id=board.board_id)
 
     else:
         return render(request, 'board/board_edit.html', {'board': board})
+
+
+@login_required
+def likes(request, board_id):
+    board = Board.objects.get(board_id=board_id)
+
+    if request.method == 'GET':
+        if board.likes.filter(id=request.user.id).exists():
+            board.likes.remove(request.user)
+            board.update_likes_count()
+        else:
+            board.likes.add(request.user)
+            board.update_likes_count()
+
+        return redirect('board_detail', board_id=board_id)
+    context = {'board': board, 'likes_count': board.likes_count}
+    return render(request, 'board/board_detail.html', context)

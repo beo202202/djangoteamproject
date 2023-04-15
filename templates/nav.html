@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>
+    Maple Survivors</title>
+  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+  <style>
+    #canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      background-color: transparent;
+    }
+
+    .flex-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+    }
+
+    .center {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container2 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 1rem;
+    }
+
+    .board-main {
+      display: flex;
+      flex-direction: column;
+      width: 600px;
+    }
+
+    .board-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @media screen and (max-width: 768px) {
+      .container2 {
+        grid-template-columns: repeat(1, 1fr);
+      }
+
+      .container>.board-list:nth-child(2) {
+        display: block;
+      }
+
+      .container>.board-list:not(:nth-child(2)) {
+        display: none;
+      }
+    }
+  </style>
+  <script>
+    function goToDetail() {
+      var button = document.getElementById("detailButton");
+      button.click();
+      }
+      
+    function checkFileSize(input) {
+      if (input.files && input.files[0]) {
+        var fileSize = input.files[0].size;
+        if (fileSize > 2 * 1024 * 1024) {
+          alert('파일 크기는 2MB 이하여야 합니다.');
+          input.value = '';
+          return false;
+        }
+        else {
+          previewImage(input);
+          return true;
+        }
+      }
+    }
+
+    function previewImage(input) {
+      var preview = document.getElementById('preview');
+      preview.style.display = "block";
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          preview.setAttribute('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+  </script>
+</head>
+
+<body>
+  <!-- <div id="background">
+    <canvas id="canvas"></canvas>
+  </div>
+  <script type="text/javascript" src="{% static 'js/maple.js' %}" data-static-url="{% static 'imgs/' %}"></script> -->
+  <nav>
+    <ul>
+      {% if not user.is_authenticated %}
+      <li role="list" dir="rtl">
+        <a href="#" aria-haspopup="listbox">
+          마이페이지
+        </a>
+        <ul role="listbox">
+          <li>
+            <a href="/user/sign-in">
+              로그인
+            </a>
+          </li>
+          <li>
+            <a href="/user/sign-up">
+              회원가입
+            </a>
+          </li>
+        </ul>
+      </li>
+      {% else %}
+      <li role="list" dir="rtl">
+        <a href="/mypage/{{user.id}}/" aria-haspopup="listbox">
+          마이페이지
+        </a>
+        <ul role="listbox">
+          <li>
+            {{ user.username }} 님
+          </li>
+          <li>
+            <a href="/user/logout">
+              로그아웃</a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}
+    </ul>
+    <ul>
+      <li>
+        <a href="/">
+          <strong>Maple Survivors</strong>
+        </a>
+      </li>
+    </ul>
+    <ul>
+      <a href="https://github.com/Songjimyung/djangoteamproject" aria-busy="true"></a>
+      <li><img src="{% static 'img/GitHub.png' %}"></li>
+    </ul>
+  </nav>
+
+
+
+  {% comment %} {% else %} {% endcomment %}
+  {% comment %} 여기는 주석 처리 하는 곳입니다. {% endif %} {% endcomment %}
+
+
+  {% block content %}
+  {% endblock content%}
+
+</body>
+
+</html>

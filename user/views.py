@@ -27,9 +27,11 @@ def sign_up_view(request):
         password2 = request.POST.get('password2', None)
         email = request.POST.get('email', '')
         bio = request.POST.get('bio', '')
-        
-        email_check = re.compile('^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
-        if not email_check.match(email) :
+
+        email_check = re.compile(
+            '^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+        if not email_check.match(email):
+
             return render(request, 'user/signup.html', {'error': 'email을 형식에 맞춰 작성해 주세요.'})
 
         if username == None or password == None:
@@ -47,8 +49,8 @@ def sign_up_view(request):
                 user.is_active = False
                 user.save()
 
-                
-                current_site = get_current_site(request) 
+                current_site = get_current_site(request)
+
                 message = render_to_string('user/activation_email.html', {
                     'user': user,
                     'domain': current_site.domain,
@@ -63,8 +65,8 @@ def sign_up_view(request):
                     '<div style="font-size: 40px; width: 100%; height:100%; display:flex; text-align:center; '
                     'justify-content: center; align-items: center;">'
                     '입력하신 이메일<span>로 인증 링크가 전송되었습니다.</span>'
-                    '</div>'            
-                )            
+                    '</div>'
+                )
 
 
 def sign_in_view(request):
@@ -94,11 +96,11 @@ def logout(request):
     return redirect('/board/list')
 
 
-def activate(request, uidb64, token) :
+def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = get_user_model().objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, get_user_model().DoesNotExsit):
+    except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExsit):
         user = None
 
     if user is not None and account_activation_token.check_token(user, token):
@@ -108,3 +110,4 @@ def activate(request, uidb64, token) :
         return redirect("/board/list/")
     else:
         return HttpResponse('계정활성화 오류, 이메일을 확인해주세요')
+

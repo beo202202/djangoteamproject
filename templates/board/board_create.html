@@ -1,38 +1,25 @@
-<!DOCTYPE html>
+{% extends 'nav.html' %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-    <title>Board</title>
-
-    <script>
-        function previewImage(input) {
-            var preview = document.getElementById('preview');
-            preview.style.display = "block";
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    preview.setAttribute('src', e.target.result);
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-    </script>
-</head>
-
-<body>
-    <h1>작성</h1>
-    <form action="/board/" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <br>
-        <input type="text" id="title" name="title" placeholder="제목" required />
-        <br>
-        <input type="text" id="content" name="content" placeholder="내용" required />
-        <br>
-        <input type="file" name="img" id="img" accept="image/*" onchange="previewImage(this);">
-        <br>
-        <img id="preview" src="#" alt="Image preview" style="display:none; width:100px; max-height:100px;">
-        <input type="submit" value="작성" />
-    </form>
-
-</body>
+<div class="container">
+    {% block title %}
+    <h2 class="flex-center">작성</h2>
+    {% endblock %}
+    <div class="flex-center">
+        <article style="width:500px;">
+            <form action="/board/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <br>
+                <input type="text" id="title" name="title" placeholder="제목" required />
+                <br>
+                <input type="text" id="content" name="content" placeholder="내용" required />
+                <br>
+                <input type="file" name="img" id="img" accept="image/*" onchange="checkFileSize(this);">
+                <br>
+                <img id="preview" src="#" alt="Image preview" style="display:none; width:100px; max-height:100px;">
+                <input type="submit" value="작성" />
+            </form>
+        </article>
+    </div>
+</div>
+{% endblock content%}
