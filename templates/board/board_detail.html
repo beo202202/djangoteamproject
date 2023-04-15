@@ -6,28 +6,39 @@
       <h2 class="flex-center">상세보기</h2>
     {% endblock %}
     <div class="flex-center">
-        <article style="width:500px;">
-            {% csrf_token %}
-            <div>
-                {% if board.img %}
-                <img src="{{ board.img.url }}" width="100" alt="{{ board.img.url }}">
-                {% endif %}
-                {{ board.content }}
-            </div>
-            <br>
-            {% if board.author == request.user %}
-            <div style="display: flex;">
-                <form action="{% url 'board_edit' board_id=board.board_id %}" method="GET" style="width:100px;">
-                    <input type="submit" role="button" value="수정">
-                </form>
-                {% load method_override %}
-                <form action="/board/{{ board.board_id }}/" method="POST" style="width:100px;">
-                    {% csrf_token %}
-                    {% method_override 'DELETE' %}
-                    <input type="submit" role="button" value="삭제">
-                </form>
-            </div>
-            {% endif%}
+      <article style="width:500px;">
+        {% csrf_token %}
+        <div>
+          {% if board.img %}
+            <img src="{{ board.img.url }}" width="100" alt="{{ board.img.url }}">
+          {% endif %}
+          {{ board.content }}
+        </div>
+        {% if request.user in board.likes.all %}
+          <a href="{% url 'likes' board_id=board.board_id %}" style="float: left;">
+            <i class="fa-solid fa-heart"></i>
+          </a>
+          <span style="float: left;">{{ board.likes_count }}</span>
+        {% else %}
+          <a href="{% url 'likes' board_id=board.board_id %}" style="float: left;">
+            <i class="fa-regular fa-heart"></i>
+          </a>
+          <p style="float: left;">{{ board.likes_count }}</p>
+        {% endif %}
+        <br>
+        {% if board.author == request.user %}
+          <div style="display: flex;">
+            <form action="{% url 'board_edit' board_id=board.board_id %}" method="GET" style="width:100px;">
+              <input type="submit" role="button" value="수정">
+            </form>
+            {% load method_override %}
+            <form action="/board/{{ board.board_id }}/" method="POST" style="width:100px;">
+              {% csrf_token %}
+              {% method_override 'DELETE' %}
+              <input type="submit" role="button" value="삭제">
+            </form>
+          </div>
+          {% endif%}
 
         </article>
       </div>
@@ -49,11 +60,11 @@
       <p>등록된 댓글이 없습니다.</p>
     {% endif %}
 
-    <h3>댓글 작성</h3> 
-    <form method="POST" action="/comment/{{ board.board_id }}/"> 
-      {% csrf_token %} 
-      <label for="comment">내용:</label> 
-      <textarea name="content" id="comment"></textarea><br> 
-      <input type="submit" value="댓글 작성"> 
+    <h3>댓글 작성</h3>
+    <form method="POST" action="/comment/{{ board.board_id }}/">
+      {% csrf_token %}
+      <label for="comment">내용:</label>
+      <textarea name="content" id="comment"></textarea><br>
+      <input type="submit" value="댓글 작성">
     </form>
-     {% endblock content %}
+  {% endblock content %}
