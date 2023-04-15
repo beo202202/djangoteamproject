@@ -31,6 +31,7 @@ def sign_up_view(request):
         email_check = re.compile(
             '^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
         if not email_check.match(email):
+
             return render(request, 'user/signup.html', {'error': 'email을 형식에 맞춰 작성해 주세요.'})
 
         if username == None or password == None:
@@ -49,6 +50,7 @@ def sign_up_view(request):
                 user.save()
 
                 current_site = get_current_site(request)
+
                 message = render_to_string('user/activation_email.html', {
                     'user': user,
                     'domain': current_site.domain,
@@ -108,3 +110,4 @@ def activate(request, uidb64, token):
         return redirect("/board/list/")
     else:
         return HttpResponse('계정활성화 오류, 이메일을 확인해주세요')
+
