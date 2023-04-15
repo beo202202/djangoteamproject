@@ -9,10 +9,8 @@
         <article style="width:500px;">
             <form action="/board/" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <br>
-                <input type="text" id="title" name="title" placeholder="제목" required />
-                <br>
-                <input type="text" id="content" name="content" placeholder="내용" required />
+                <textarea id="content" name="content" cols="30" rows="5" placeholder="내용" maxlength="200"
+                    required></textarea>
                 <br>
                 <input type="file" name="img" id="img" accept="image/*" onchange="checkFileSize(this);">
                 <br>

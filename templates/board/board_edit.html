@@ -8,15 +8,9 @@
     <div class="flex-center">
         <article style="width:500px;">
             <form method="POST" action="{% url 'board_edit' board_id=board.board_id %}" enctype="multipart/form-data">
-                {{ board.board_id }}
                 {% csrf_token %}
-                <label for="title">제목</label>
-                <br>
-                <input type="text" name="title" id="title" value="{{ board.title }}">
-                <br>
-                <label for="content">내용</label>
-                <br>
-                <textarea name="content" id="content">{{ board.content }}</textarea>
+                <textarea name="content" id="content" cols="30" rows="5" placeholder="내용" maxlength="200"
+                    required>{{ board.content }}</textarea>
                 <br>
                 {% if board.img %}
                 <img id="preview" src="{{ board.img.url }}" alt="Image preview" style="width:100px; max-height:100px;">

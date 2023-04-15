@@ -6,40 +6,29 @@
       <h2 class="flex-center">상세보기</h2>
     {% endblock %}
     <div class="flex-center">
-      <article style="width:500px;">
-        {% csrf_token %}
-        <h1 class="flex-center">{{ board.title }}</h1>
-        <h2 class="flex-center">{{ board.content }}</h2>
-        {% if board.img %}
-          <div class="flex-center">
-            <img src="{{ board.img.url }}" width="100" alt="{{ board.img.url }}">
-          </div>
-        {% endif %}
-        {% if request.user in board.likes.all %}
-          <a href="{% url 'likes' board_id=board.board_id %}" style="float: left;">
-            <i class="fa-solid fa-heart"></i>
-          </a>
-          <span style="float: left;">{{ board.likes_count }}</span>
-        {% else %}
-          <a href="{% url 'likes' board_id=board.board_id %}" style="float: left;">
-            <i class="fa-regular fa-heart"></i>
-          </a>
-          <p style="float: left;">{{ board.likes_count }}</p>
-        {% endif %}
-        {% if board.author == request.user %}
-          <form action="{% url 'board_edit' board_id=board.board_id %}" method="GET">
-            <input type="submit" role="button" value="수정" style="width:50%;">
-          </form>
-          {% load method_override %}
-          <form action="/board/{{ board.board_id }}/" method="POST">
+        <article style="width:500px;">
             {% csrf_token %}
-
-            {% method_override 'DELETE' %}
-            <div class="flex-center">
-              <input type="submit" role="button" value="삭제" style="width:50%;">
+            <div>
+                {% if board.img %}
+                <img src="{{ board.img.url }}" width="100" alt="{{ board.img.url }}">
+                {% endif %}
+                {{ board.content }}
             </div>
-          </form>
-          {% endif%}
+            <br>
+            {% if board.author == request.user %}
+            <div style="display: flex;">
+                <form action="{% url 'board_edit' board_id=board.board_id %}" method="GET" style="width:100px;">
+                    <input type="submit" role="button" value="수정">
+                </form>
+                {% load method_override %}
+                <form action="/board/{{ board.board_id }}/" method="POST" style="width:100px;">
+                    {% csrf_token %}
+                    {% method_override 'DELETE' %}
+                    <input type="submit" role="button" value="삭제">
+                </form>
+            </div>
+            {% endif%}
+
         </article>
       </div>
     </div>
