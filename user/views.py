@@ -13,22 +13,13 @@ from .tokens import account_activation_token
 from django.utils.encoding import force_bytes, force_str
 
 
-
-def home(request):
-    user = request.user.is_authenticated  # 로그인 되어 있는지 확인
-    if user:
-        return render(request, 'home.html')
-    else:
-        return render(request, 'signin.html')
-
-
 def sign_up_view(request):
     if request.method == 'GET':
         user = request.user.is_authenticated  # 로그인이 되어있는지 확인
         if user:
-            return redirect('/user/')
+            return redirect('/board/list')
         else:
-            return render(request, 'signup.html')
+            return render(request, 'user/signup.html')
 
     elif request.method == 'POST':
         username = request.POST.get('username', None)
@@ -39,16 +30,16 @@ def sign_up_view(request):
         
         email_check = re.compile('^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
         if not email_check.match(email) :
-            return render(request, 'signup.html', {'error': 'email을 형식에 맞춰 작성해 주세요.'})
+            return render(request, 'user/signup.html', {'error': 'email을 형식에 맞춰 작성해 주세요.'})
 
         if username == None or password == None:
-            return render(request, 'signup.html', {'error': '올바른 값을 입력해주세요.'})
+            return render(request, 'user/signup.html', {'error': '올바른 값을 입력해주세요.'})
 
         if password != password2:
-            return render(request, 'signup.html', {'error': '올바른 비밀번호를 설정해주세요.'})
+            return render(request, 'user/signup.html', {'error': '올바른 비밀번호를 설정해주세요.'})
         else:
             if get_user_model().objects.filter(username=username).exists():
-                return render(request, 'signup.html', {'error': '중복된 아이디가 존재합니다.'})
+                return render(request, 'user/signup.html', {'error': '중복된 아이디가 존재합니다.'})
 
             else:
                 user = get_user_model().objects.create(username=username, email=email, bio=bio)
@@ -58,7 +49,7 @@ def sign_up_view(request):
 
                 
                 current_site = get_current_site(request) 
-                message = render_to_string('activation_email.html', {
+                message = render_to_string('user/activation_email.html', {
                     'user': user,
                     'domain': current_site.domain,
                     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
@@ -85,22 +76,22 @@ def sign_in_view(request):
 
         if me is not None:
             auth.login(request, me)
-            return redirect('/user/')
+            return redirect('/board/list')
         else:
-            return render(request, 'signin.html', {'error': '유저이름 혹은 패스워드를 확인 해 주세요'})
+            return render(request, 'user/signin.html', {'error': '유저이름 혹은 패스워드를 확인 해 주세요'})
 
     elif request.method == 'GET':
         user = request.user.is_authenticated  # 로그인 되어 있는지 확인
         if user:
-            return redirect('/user/')
+            return redirect('/board/list')
         else:
-            return render(request, 'signin.html')
+            return render(request, 'user/signin.html')
 
 
 @login_required
 def logout(request):
     auth.logout(request)
-    return redirect('/user/')
+    return redirect('/board/list')
 
 
 def activate(request, uidb64, token) :
@@ -114,6 +105,6 @@ def activate(request, uidb64, token) :
         user.is_active = True
         user.save()
         auth.login(request, user)
-        return redirect("/user/")
+        return redirect("/board/list/")
     else:
-        return render(request, 'home.html', {'error' : '계정 활성화 오류'})
+        return HttpResponse('계정활성화 오류, 이메일을 확인해주세요')

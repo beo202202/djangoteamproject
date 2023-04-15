@@ -200,6 +200,7 @@ ehthumbs_vista.db
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
+
 # Windows Installer files
 *.cab
 *.msi
@@ -210,4 +211,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+**/migrations/**_initial.py
+!**/migrations/_init_.py
 # End of https://www.toptal.com/developers/gitignore/api/django,windows,visualstudiocode,venv

@@ -1,29 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>home</title>
-</head>
-<body>
-    <nav>
+{% extends 'nav.html' %}
+{% block content %}
+
+  {% block title %}
+  홈
+  {% endblock %}
+  
+  <div class="container">    
+    <div class="grid">
+      <div>111111111</div>
         <div>
-            <a href="/user/">Project</a>
-            <form>
-                <ul>
-                    <li disabled>
-                        <span>
-                            {{ user.username }}님 반갑습니다!
-                        </span>
-                    </li>
-                    <li>
-                        <a href="/board/list"> 글목록</a>
-                    </li>
-                    <li>
-                        <a href="/user/logout"> 로그아웃</a>
-                    </li>
-                </ul>
-            </form>
-        </div>
-    </nav>
-</body>
-</html>
+          {% include 'board/board_list.html' with  boards=boards %}
+      </div>
+      <div>33333333333</div>
+    </div>
+  </div>
+{% endblock content%}

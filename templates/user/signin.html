@@ -1,0 +1,30 @@
+{% extends 'nav.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="flex-center">
+    <article style="width:500px;">
+    {% block title %}
+    <h2 class="flex-center">로그인</h2>
+    {% endblock %}
+    <form method="post" action="/user/sign-in/">
+        {% csrf_token %}
+        <div>
+            <input type="text" id="username" name="username" placeholder="유저이름">
+        </div>
+        <div>
+            <input type="password" id="password" name="password" placeholder="비밀번호">
+        </div>
+        <hr>
+        {% if error %}
+            <div role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+            <button type="submit">로그인</button>
+            <a href="/user/sign-up">회원가입 페이지로</a>
+    </form>
+</article>
+<div>
+<div>
+{% endblock content%}
