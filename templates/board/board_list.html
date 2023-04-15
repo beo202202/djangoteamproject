@@ -41,15 +41,17 @@
           </div>
           <div class="board-content">
             <article style="width:500px;" onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'">
-              <div style="cursor: pointer; height:200px">
+              <div style="cursor: pointer; max-height:200px">
                 {% if board.img %}
-                <img src=" {{ board.img.url }}" style="width:200px;height:200px;" alt="{{ board.img.url }}">
+                <img src=" {{ board.img.url }}" style="width:100px;height:100px;" alt="{{ board.img.url }}">
                 {% endif %}
-                {{ board.content }}
+                <span class="text">
+                  {{ board.content }}
+                </span>
               </div>
               <footer>
                 <span style="float: left;"><i class="fa-solid fa-heart"></i>{{ board.likes_count }}</span>
-                <span style="float: right;">작성 시간: {{ board.created_at|timesince }} 전</span>
+                <span style="float: right;">{{ board.updated_at|timesince }} 전</span>
                 <br>
               </footer>
             </article>
