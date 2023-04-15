@@ -15,6 +15,11 @@
                 <input type="text" id="email" placeholder="이메일" name="email" required>
                 <input type="text" id="bio" placeholder="소개글" name="bio">
                 <hr>
+                {% if error %}
+                <div role="alert">
+                    {{ error }}
+                </div>
+                {% endif %}
                 <button type="submit">회원가입</button>
                 <a href="/user/sign-in">로그인 페이지로</a>
             </form>
