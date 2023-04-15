@@ -9,7 +9,7 @@
         <article style="width:500px;">
             <form method="POST" action="{% url 'board_edit' board_id=board.board_id %}" enctype="multipart/form-data">
                 {% csrf_token %}
-                <textarea name="content" id="content" cols="30" rows="5" placeholder="내용" maxlength="500"
+                <textarea name="content" id="content" cols="30" rows="5" placeholder="내용" maxlength="200"
                     required>{{ board.content }}</textarea>
                 <br>
                 {% if board.img %}

@@ -9,7 +9,7 @@ class Board(models.Model):
     board_id = models.AutoField(primary_key=True)
     # title = models.CharField(max_length=50)
     img = models.FileField(null=True, upload_to="", blank=True)
-    content = models.TextField(max_length=500)
+    content = models.TextField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

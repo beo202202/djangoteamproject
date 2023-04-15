@@ -22,7 +22,7 @@
           <article style="width:500px;">
             <form action="/board/" method="POST" enctype="multipart/form-data">
               {% csrf_token %}
-              <textarea id="content" name="content" cols="30" rows="5" placeholder="내용" maxlength="500"
+              <textarea id="content" name="content" cols="30" rows="5" placeholder="내용" maxlength="200"
                 required></textarea>
               <br>
               <input type="file" name="img" id="img" accept="image/*" onchange="checkFileSize(this);">
@@ -41,8 +41,8 @@
           </div>
           <div class="board-content">
             <article style="width:500px;" onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'">
-
-              <div style="cursor: pointer; height:200px">{% if board.img %}
+              <div style="cursor: pointer; height:200px">
+                {% if board.img %}
                 <img src=" {{ board.img.url }}" style="width:200px;height:200px;" alt="{{ board.img.url }}">
                 {% endif %}
                 {{ board.content }}
