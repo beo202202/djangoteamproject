@@ -27,4 +27,5 @@ urlpatterns = [
     path('user/', include('user.urls', namespace='user')),
     path('mypage/', include('my_page.urls')),
     path('board/', include('boards.urls')),
+    path('comment/', include('comments.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # media 경로

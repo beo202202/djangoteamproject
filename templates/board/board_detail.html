@@ -44,4 +44,27 @@
       </div>
     </div>
 
-  {% endblock content%}
+    <hr>
+    {% if comments %}
+      <ul>
+        {% for comment in comments %}
+          <li>
+            {{ comment.content }}
+            <p>{{ comment.username }}
+              |
+              {{ comment.created_at }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>등록된 댓글이 없습니다.</p>
+    {% endif %}
+
+    <h3>댓글 작성</h3> 
+    <form method="POST" action="/comment/{{ board.board_id }}/"> 
+      {% csrf_token %} 
+      <label for="comment">내용:</label> 
+      <textarea name="content" id="comment"></textarea><br> 
+      <input type="submit" value="댓글 작성"> 
+    </form>
+     {% endblock content %}

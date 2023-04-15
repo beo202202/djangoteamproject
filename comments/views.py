@@ -3,18 +3,20 @@ from .forms import CommentForm
 from .models import Comment
 
 # Create your views here.
-def comment(request, board_id):
-    comment = Comment.object.get(board_id=board_id)
-    
+def comment(request, board_id):    
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.author = request.user
+            comment.username = request.user
             comment.board_id = board_id
             comment.save()
-            return redirect('/board/detail/', board_id=board_id)
-    else:
-        form = CommentForm
+            return redirect('/board/detail/{}/'.format(board_id))
+    else:        
+        comment = Comment.objects.get(board_id=board_id)
+        form = CommentForm()
+        context = {'form': form }
         
-    return render(request, 'comment.html', {'form'}:form)
+    return render(request, 'board/board_detail.html', context)
+
+
