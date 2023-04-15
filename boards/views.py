@@ -9,6 +9,7 @@ from django.urls import reverse_lazy, reverse
 from .forms import BoardForm
 from django.http import HttpResponse
 import os
+from PIL import Image
 
 
 # Create your views here.
@@ -33,21 +34,27 @@ class Boards(View):
             board = form.save(commit=False)
             board.author = request.user
             # board.img = request.FILES.get('img')    # 이미지 주소 받아오기
+
+            # 이미지 파일 압축하기
+            if board.img:
+                image_path = board.img.path
+                if os.path.exists(image_path):
+                    compressed_image_path = image_path.replace(
+                        ".jpg", "_compressed.jpg")
+                    image = Image.open(image_path)
+                    image = image.convert('RGB')
+                    image.save(compressed_image_path,
+                               optimize=True, quality=70)
+                    board.img.name = compressed_image_path.split("/")[-1]
+
             board.save()
 
-            # 위 아래는 똑같은 결과값이 된다.
-            # author = request.user
-            # title = request.POST['title']
-            # content = request.POST['content']
-            # img = request.FILES.get('img')  
-            # board = Board.objects.create(author=author,
-            #     title=title, content=content, img=img)
-            # board.save()
-        
             return redirect('/board/list/')  # 상세보기로 가기
             # return render(request, '/board_create.html')
-        
-        return redirect('오류 폐기처리 페이지')
+        # except Exception as e:
+        #     return render(request, 'error.html', {'error_message': str(e)})
+
+        # return render(request, 'error.html')
 
     def delete(self, request, board_id):
         Board.objects.get(board_id=board_id).delete()
@@ -84,6 +91,18 @@ def board_edit(request, board_id):
         if 'img' in request.FILES:  # 새로운 이미지가 업로드된 경우
             board.img.delete()          # 기존 이미지 삭제
             board.img = request.FILES.get('img')    # 새로운 이미지 저장
+
+            # 이미지 파일 압축하기
+            image_path = board.img.path
+            compressed_image_path = image_path.replace(
+                ".jpg", "_compressed.jpg")
+            image = Image.open(image_path)
+            image = image.convert('RGB')
+            image.save(compressed_image_path, optimize=True, quality=70)
+            board.img.name = compressed_image_path.split("/")[-1]
+
+            board.save()
+
         board.save()
 
         return redirect('board_detail', board_id=board.board_id)

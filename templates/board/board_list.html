@@ -1,42 +1,41 @@
-<!DOCTYPE html>
+{% extends 'nav.html' %}
+{% block content %}
 
-<head>
-  <meta charset="UTF-8">
-  
-  <title>Board</title>
-</head>
+{% block title %}
+<h2 class="flex-center">게시판</h2>
+{% endblock %}
 
-<body>
-  <h1>게시판</h1>
-  {% if request.user.is_authenticated %}
-    <a href="/board/">작성하기</a>
-    <a href="/mypage/{{user.id}}">마이페이지</a>
-    <a href="/user/logout">로그아웃</a>
-  {% else %}
-    <a href="/user/sign-in">로그인</a>
-    <a href="/user/sign-up">회원가입</a>
-  {% endif %}
+<div class="container2">
+  <div class="board-list">123</div>
+  <div class="board-list" style="width:600px;">
 
-  {% for board in boards %}
-    <article>
-      <header>{{ board.title }}</header>
-      {% if board.img %}
-        <img src="{{ board.img.url }}" width="100" alt="{{ board.img.url }}">
-        <br>
-      {% endif %}
-      {{ board.content }}
-      <footer>
-        <p style="text-align:left">글쓴이:
-          {{ board.author }}</p>
-        작성 시간:
-        {{ board.created_at|timesince }}
-        전
-        <button onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'">상세보기</button>
-
-      </footer>
-    </article>
-  {% endfor %}
-
-</body>
-
-</html>
+    {% for board in boards %}
+    <div class="flex-center">
+      <div class="board-main">
+        <div class="board-info">
+          <mark>{{ board.author }}</mark>님이 작성한 글입니다.
+        </div>
+        <div class="board-content" style="cursor: pointer;" onclick="goToDetail()">
+          <article style="width:500px;">
+            <header>{{ board.title }}</header>
+            {% if board.img %}
+            <img src=" {{ board.img.url }}" width="100" alt="{{ board.img.url }}">
+            <br>
+            {% endif %}
+            {{ board.content }}
+            <footer>
+              작성 시간:
+              {{ board.created_at|timesince }}
+              전
+              <button id="detailButton" onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'"
+                style="display: none;">상세보기</button>
+            </footer>
+          </article>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="board-list">321</div>
+</div>
+{% endblock content%}
