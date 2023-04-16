@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -11,6 +11,19 @@
 
 
   <style>
+    body {
+      background-image: url("/static/imgs/blackmage.gif");
+      background-repeat: repeat;
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed;
+    }
+
+    nav {
+      position: relative;
+      z-index: 1;
+    }
+
     #canvas {
       position: absolute;
       top: 0;
@@ -23,12 +36,21 @@
       display: flex;
       justify-content: center;
       align-items: center;
-
     }
 
     .center {
       display: flex;
       flex-direction: column;
+    }
+
+    .flex-right {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .flex-left {
+      display: flex;
+      justify-content: flex-start;
     }
 
     .container2 {
@@ -88,23 +110,50 @@
     document.addEventListener('DOMContentLoaded', function () {
       const toggleImg = document.querySelector('#theme-toggle');
       const htmlElement = document.querySelector('html');
-      const toggleImg2 = document.querySelector('#theme-toggle2');
+      // const toggleImg2 = document.querySelector('#theme-toggle2');
+      // const toggleImg3 = document.querySelector('#theme-toggle3');
+      // const toggleImg4 = document.querySelector('#theme-toggle4');
+
+      // 로컬스토리지에서 현재 테마 정보를 불러옵니다
+      const currentTheme = localStorage.getItem('theme');
+      if (currentTheme) {
+        htmlElement.setAttribute('data-theme', currentTheme);
+        if (currentTheme === 'dark') {
+          toggleImg.setAttribute('src', '/static/imgs/light.png');
+          toggleImg.setAttribute('alt', '라이트 테마 이미지');
+          // toggleImg2.setAttribute('src', '/static/imgs/github_light.png');
+          // toggleImg3.setAttribute('src', '/static/imgs/bookmarked_dark.png');
+          // toggleImg4.setAttribute('src', '/static/imgs/bookmark_dark.png');
+        } else {
+          toggleImg.setAttribute('src', '/static/imgs/dark.png');
+          toggleImg.setAttribute('alt', '다크 테마 이미지');
+          // toggleImg2.setAttribute('src', '/static/imgs/github_dark.png');
+          // toggleImg3.setAttribute('src', '/static/imgs/bookmarked_light.png');
+          // toggleImg4.setAttribute('src', '/static/imgs/bookmark_light.png');
+        }
+      }
 
       toggleImg.addEventListener('click', function () {
         if (htmlElement.getAttribute('data-theme') === 'light') {
           htmlElement.setAttribute('data-theme', 'dark');
           toggleImg.setAttribute('src', '/static/imgs/light.png');
           toggleImg.setAttribute('alt', '라이트 테마 이미지');
-          toggleImg2.setAttribute('src', '/static/imgs/github_light.png');
-        }
-        else {
+          // toggleImg2.setAttribute('src', '/static/imgs/github_light.png');
+          localStorage.setItem('theme', 'dark'); // 로컬스토리지에 현재 테마 정보를 저장합니다
+          // toggleImg3.setAttribute('src', '/static/imgs/bookmarked_dark.png');
+          // toggleImg4.setAttribute('src', '/static/imgs/bookmark_dark.png');
+        } else {
           htmlElement.setAttribute('data-theme', 'light');
           toggleImg.setAttribute('src', '/static/imgs/dark.png');
           toggleImg.setAttribute('alt', '다크 테마 이미지');
-          toggleImg2.setAttribute('src', '/static/imgs/github_dark.png');
+          // toggleImg2.setAttribute('src', '/static/imgs/github_dark.png');
+          localStorage.setItem('theme', 'light'); // 로컬스토리지에 현재 테마 정보를 저장합니다
+          // toggleImg3.setAttribute('src', '/static/imgs/bookmarked_light.png');
+          // toggleImg4.setAttribute('src', '/static/imgs/bookmark_light.png');
         }
       })
     });
+
     function goToDetail() {
       var button = document.getElementById("detailButton");
       button.click();
@@ -176,10 +225,12 @@
           <li>
             {{ user.username }}님
           </li>
+          {% if request.build_absolute_uri != "http://127.0.0.1:8000/bookmark/" %}
           <li>
             <a href="/bookmark/">
               북마크 목록</a>
           </li>
+          {% endif %}
           <li>
             <a href="/user/logout">
               로그아웃</a>
@@ -196,7 +247,6 @@
       </li>
     </ul>
     <ul>
-      <!-- <button class="contrast switcher theme-switcher" aria-label="Turn on dark mode"><i>Turn on dark mode</i></button> -->
       <div id="theme-toggle-container">
         <img id="theme-toggle" src="/static/imgs/light.png" alt="라이트 테마 이미지">
       </div>

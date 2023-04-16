@@ -1,6 +1,7 @@
 {% extends 'nav.html' %}
 {% block content %}
 
+{% load static %}
 <div class="container">
   {% block title %}
   <h2 class="flex-center">상세보기</h2>
@@ -47,7 +48,14 @@
 <!-- 북마크 기능 -->
 <form action="/bookmark/{{ board.board_id }}/" method="POST">
   {% csrf_token %}
-  <button type="submit">북마크에 추가</button>
+  <button type="submit" style="display:none;"></button>
+  {% if is_bookmarked == True %}
+  <img id="theme-toggle3" src="{% static 'imgs/bookmarked_dark.png' %}"
+    style="cursor: pointer; width: 50px; height: 50px;" alt="북마크" onclick="this.parentNode.submit();" />
+  {% else %}
+  <img id="theme-toggle4" src="{% static 'imgs/bookmark_dark.png' %}"
+    style="cursor: pointer; width: 50px; height: 50px;" alt="북마크" onclick="this.parentNode.submit();" />
+  {% endif %}
 </form>
 
 <!-- 메시지 출력 -->
