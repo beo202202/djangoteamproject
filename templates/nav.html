@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="UTF-8">
@@ -71,12 +71,44 @@
         display: none;
       }
     }
+
+    #theme-toggle-container {
+      background-color: white;
+      border-radius: 50%;
+      cursor: pointer;
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      width: 50px;
+      height: 50px;
+    }
   </style>
   <script>
+    // <!-- 테마 전환 -->
+    document.addEventListener('DOMContentLoaded', function () {
+      const toggleImg = document.querySelector('#theme-toggle');
+      const htmlElement = document.querySelector('html');
+      const toggleImg2 = document.querySelector('#theme-toggle2');
+
+      toggleImg.addEventListener('click', function () {
+        if (htmlElement.getAttribute('data-theme') === 'light') {
+          htmlElement.setAttribute('data-theme', 'dark');
+          toggleImg.setAttribute('src', '/static/imgs/light.png');
+          toggleImg.setAttribute('alt', '라이트 테마 이미지');
+          toggleImg2.setAttribute('src', '/static/imgs/github_light.png');
+        }
+        else {
+          htmlElement.setAttribute('data-theme', 'light');
+          toggleImg.setAttribute('src', '/static/imgs/dark.png');
+          toggleImg.setAttribute('alt', '다크 테마 이미지');
+          toggleImg2.setAttribute('src', '/static/imgs/github_dark.png');
+        }
+      })
+    });
     function goToDetail() {
       var button = document.getElementById("detailButton");
       button.click();
-    }
+    };
 
     function checkFileSize(input) {
       if (input.files && input.files[0]) {
@@ -91,7 +123,7 @@
           return true;
         }
       }
-    }
+    };
 
     function previewImage(input) {
       var preview = document.getElementById('preview');
@@ -103,9 +135,10 @@
         }
         reader.readAsDataURL(input.files[0]);
       }
-    }
-
+    };
   </script>
+
+
 </head>
 
 <body>
@@ -119,7 +152,7 @@
       {% if not user.is_authenticated %}
       <li role="list" dir="rtl">
         <a href="#" aria-haspopup="listbox">
-          마이페이지
+          로그인하세요
         </a>
         <ul role="listbox">
           <li>
@@ -144,6 +177,10 @@
             {{ user.username }}님
           </li>
           <li>
+            <a href="/bookmark/">
+              북마크 목록</a>
+          </li>
+          <li>
             <a href="/user/logout">
               로그아웃</a>
           </li>
@@ -159,10 +196,17 @@
       </li>
     </ul>
     <ul>
+      <!-- <button class="contrast switcher theme-switcher" aria-label="Turn on dark mode"><i>Turn on dark mode</i></button> -->
+      <div id="theme-toggle-container">
+        <img id="theme-toggle" src="/static/imgs/light.png" alt="라이트 테마 이미지">
+      </div>
+
       <a href="" aria-busy="true"></a>
-      <a href="https://github.com/Songjimyung/djangoteamproject">
-        <li><img src="{% static 'imgs/GitHub.png' %}" style="width:50px; height:50px;"></li>
-      </a>
+      <li>
+        <a href="https://github.com/Songjimyung/djangoteamproject">
+          <img id="theme-toggle2" src="/static/imgs/github_light.png" style="width:50px; height:50px;" alt="라이트 테마 이미지">
+        </a>
+      </li>
 
     </ul>
   </nav>
