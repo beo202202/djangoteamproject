@@ -4,7 +4,7 @@
 
 <div class="container2">
     <div class="board-list" name="프로필 띄우는 곳" style="height: 400px; background-color: red;">
-        <div class="flex-center">
+        <div class="flex-right">
             {% if user.is_authenticated %}
             <div>프로필 보여주기</div>
             {% else %}
@@ -56,9 +56,9 @@
                 {% else %}
                 <div name="글리스트">
                     <div class="board-info">
-                        내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이
-                        읎어내용이 읎어내용이
-                        읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어
+                        <div style="text-align: center;">
+                            추가한 게시글이 없습니다.
+                        </div>
                     </div>
                 </div>
                 {% endif %}

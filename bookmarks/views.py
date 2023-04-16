@@ -14,12 +14,18 @@ def add_bookmark(request, board_id):
     user_bookmarks = Bookmark.objects.filter(user=request.user)
     if user_bookmarks.filter(boards=board).exists():
         # 북마크에 있는 게시글
-        messages.warning(request, '이미 북마크에 추가된 게시글입니다.')
+        # 삭제하는 기능....
+        # bookmark = get_object_or_404(Bookmark, id=bookmark_id, user=request.user)
+        # bookmark = Bookmark.objects.delete(user=request.user)
+        # user_bookmarks.delete()
+        user_bookmarks.filter(boards=board).delete()
+        messages.warning(request, '북마크에서 삭제되었습니다.')
+        # messages.warning(request, '이미 북마크에 추가된 게시글입니다.')
     else:
         # 북마크에 없는 게시글
         bookmark = Bookmark.objects.create(user=request.user)
         bookmark.boards.add(board)
-        messages.success(request, '게시글이 북마크에 추가되었습니다.')
+        messages.success(request, '북마크에 추가되었습니다.')
 
     return redirect('board_detail', board_id=board_id)
 
@@ -29,10 +35,14 @@ def add_bookmark(request, board_id):
 # LginRequiredMixin 클래스를 상속해야 클래스에 적용이 가능하다.
 class BookmarkList(LoginRequiredMixin, View):
     def get(self, request):
-        bookmarks = Bookmark.objects.filter(user=request.user)
+        bookmarks = Bookmark.objects.filter(
+            user=request.user).order_by('-created_at')
         boards = [bookmark.boards.all()[0] for bookmark in bookmarks]
         context = {'boards': boards, 'username': request.user.username}
         return render(request, 'bookmark/bookmark_list.html', context)
+
+# 내가 북마크 추가한 시간 순서대로 넣어야된다.
+# 되었는지는 추가/삭제 기능이 완벽히 되면 테스트 해보자.
 
 # updated_at을 이용해서 최신 순으로 주르륵 떠야하고
 

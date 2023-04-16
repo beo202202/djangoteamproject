@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -98,6 +98,27 @@
       const toggleImg = document.querySelector('#theme-toggle');
       const htmlElement = document.querySelector('html');
       const toggleImg2 = document.querySelector('#theme-toggle2');
+      const toggleImg3 = document.querySelector('#theme-toggle3');
+      const toggleImg4 = document.querySelector('#theme-toggle4');
+
+      // 로컬스토리지에서 현재 테마 정보를 불러옵니다
+      const currentTheme = localStorage.getItem('theme');
+      if (currentTheme) {
+        htmlElement.setAttribute('data-theme', currentTheme);
+        if (currentTheme === 'dark') {
+          toggleImg.setAttribute('src', '/static/imgs/light.png');
+          toggleImg.setAttribute('alt', '라이트 테마 이미지');
+          toggleImg2.setAttribute('src', '/static/imgs/github_light.png');
+          // toggleImg3.setAttribute('src', '/static/imgs/bookmarked_dark.png');
+          // toggleImg4.setAttribute('src', '/static/imgs/bookmark_dark.png');
+        } else {
+          toggleImg.setAttribute('src', '/static/imgs/dark.png');
+          toggleImg.setAttribute('alt', '다크 테마 이미지');
+          toggleImg2.setAttribute('src', '/static/imgs/github_dark.png');
+          // toggleImg3.setAttribute('src', '/static/imgs/bookmarked_light.png');
+          // toggleImg4.setAttribute('src', '/static/imgs/bookmark_light.png');
+        }
+      }
 
       toggleImg.addEventListener('click', function () {
         if (htmlElement.getAttribute('data-theme') === 'light') {
@@ -105,15 +126,21 @@
           toggleImg.setAttribute('src', '/static/imgs/light.png');
           toggleImg.setAttribute('alt', '라이트 테마 이미지');
           toggleImg2.setAttribute('src', '/static/imgs/github_light.png');
-        }
-        else {
+          localStorage.setItem('theme', 'dark'); // 로컬스토리지에 현재 테마 정보를 저장합니다
+          // toggleImg3.setAttribute('src', '/static/imgs/bookmarked_dark.png');
+          // toggleImg4.setAttribute('src', '/static/imgs/bookmark_dark.png');
+        } else {
           htmlElement.setAttribute('data-theme', 'light');
           toggleImg.setAttribute('src', '/static/imgs/dark.png');
           toggleImg.setAttribute('alt', '다크 테마 이미지');
           toggleImg2.setAttribute('src', '/static/imgs/github_dark.png');
+          localStorage.setItem('theme', 'light'); // 로컬스토리지에 현재 테마 정보를 저장합니다
+          // toggleImg3.setAttribute('src', '/static/imgs/bookmarked_light.png');
+          // toggleImg4.setAttribute('src', '/static/imgs/bookmark_light.png');
         }
       })
     });
+
     function goToDetail() {
       var button = document.getElementById("detailButton");
       button.click();
