@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'boards',
     'my_page',
     'comments',
+    'bookmarks',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

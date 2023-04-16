@@ -5,12 +5,13 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, ListView, CreateView, DeleteView
 from .models import Board
-from django.urls import reverse_lazy, reverse
+# from django.urls import reverse_lazy, reverse
 from .forms import BoardForm
-from django.http import HttpResponse
+# from django.http import HttpResponse
 import os
 from PIL import Image
 from comments.models import Comment
+from bookmarks.models import Bookmark
 
 
 # Create your views here.
@@ -67,7 +68,7 @@ class BoardList(View):
     def get(self, request):
         if request.method == 'GET':
             boards = Board.objects.all().order_by('-updated_at')
-            
+
             return render(request, 'board/board_list.html', {'boards': boards})
         return redirect('/board/')
 
@@ -80,7 +81,17 @@ class BoardList(View):
 def board_detail(request, board_id):
     board = Board.objects.get(board_id=board_id)
     comments = Comment.objects.filter(board=board)
-    context = {'board': board, 'comments': comments}
+
+    is_bookmarked = False
+    if request.user.is_authenticated:
+        user_bookmarks = Bookmark.objects.filter(user=request.user)
+        if user_bookmarks.filter(boards=board).exists():
+            is_bookmarked = True
+
+    # bookmarks = Bookmark.objects.filter(board_id=board_id).count
+    # , 'bookmarks': bookmarks}
+    context = {'board': board, 'comments': comments,
+               'is_bookmarked': is_bookmarked}
     return render(request, 'board/board_detail.html', context)
 
 

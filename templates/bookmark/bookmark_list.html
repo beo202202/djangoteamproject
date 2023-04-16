@@ -1,0 +1,76 @@
+{% extends 'nav.html' %}
+{% block content %}
+
+
+<div class="container2">
+    <div class="board-list" name="프로필 띄우는 곳" style="height: 400px;">
+        <div class="flex-right">
+            {% if user.is_authenticated %}
+            <div></div>
+            {% else %}
+            <div>로그인하시오</div>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <div class="board-list" style="min-width:600px;" name="메인창">
+
+
+        <div class=" flex-center">
+            <div class=" board-main">
+
+                <div class="flex-center">
+                    <h2>북마크 리스트</h2>
+                </div>
+                {% if boards %}
+                {% for board in boards %}
+                <div name="글리스트">
+                    <div class="board-info">
+                        <mark>{{ username }}</mark>님이 작성한 글입니다.
+                    </div>
+                    <div class="board-content">
+                        <article style="width:500px;"
+                            onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'">
+                            <div style="cursor: pointer; max-height:200px">
+                                {% if board.img %}
+                                <img src=" {{ board.img.url }}" style="width:100px;height:100px;"
+                                    alt="{{ board.img.url }}">
+                                {% endif %}
+                                <span class="text">
+                                    {{ board.content }}
+                                </span>
+                            </div>
+                            <footer>
+                                <span style="float: left;">
+                                    <i class="fa-solid fa-heart"></i>
+                                    {{ board.likes_count }}
+                                </span>
+                                <span style="float: right;">{{ board.updated_at|timesince }} 전</span>
+                                <br>
+                            </footer>
+                        </article>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div name="글리스트">
+                    <div class="board-info">
+                        <div style="text-align: center;">
+                            추가한 게시글이 없습니다.
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="board-list" name="태그나 다른 사람 프로필 뜨는 곳" style="height: 600px;"></div>
+</div>
+{% endblock content%}
+
+
+<!-- <div class="board-info">
+    <mark>{{ board.author }}</mark>님이 작성한 글입니다.
+  </div> -->

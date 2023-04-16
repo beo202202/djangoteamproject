@@ -1,70 +1,111 @@
 {% extends 'nav.html' %}
 {% block content %}
 
-  <div class="container">
-    {% block title %}
-      <h2 class="flex-center">상세보기</h2>
-    {% endblock %}
-    <div class="flex-center">
-      <article style="width:500px;">
-        {% csrf_token %}
-        <div>
-          {% if board.img %}
-            <img src="{{ board.img.url }}" width="100" alt="{{ board.img.url }}">
-          {% endif %}
-          {{ board.content }}
-        </div>
-        {% if request.user in board.likes.all %}
-          <a href="{% url 'likes' board_id=board.board_id %}" style="float: left;">
-            <i class="fa-solid fa-heart"></i>
-          </a>
-          <span style="float: left;">{{ board.likes_count }}</span>
-        {% else %}
-          <a href="{% url 'likes' board_id=board.board_id %}" style="float: left;">
-            <i class="fa-regular fa-heart"></i>
-          </a>
-          <p style="float: left;">{{ board.likes_count }}</p>
+{% load static %}
+<div class="container">
+  {% block title %}
+  <h2 class="flex-center">상세보기</h2>
+  {% endblock %}
+  <div class="flex-center">
+    <article style="width:500px;">
+      {% csrf_token %}
+      <div>
+        {% if board.img %}
+        <img src="{{ board.img.url }}" width="100" alt="{{ board.img.url }}">
         {% endif %}
-        <br>
-        {% if board.author == request.user %}
-          <div style="display: flex;">
-            <form action="{% url 'board_edit' board_id=board.board_id %}" method="GET" style="width:100px;">
-              <input type="submit" role="button" value="수정">
-            </form>
-            {% load method_override %}
-            <form action="/board/{{ board.board_id }}/" method="POST" style="width:100px;">
-              {% csrf_token %}
-              {% method_override 'DELETE' %}
-              <input type="submit" role="button" value="삭제">
-            </form>
-          </div>
-          {% endif%}
+        {{ board.content }}
+      </div>
+        <!-- 좋아요 기능 -->
+      {% if request.user in board.likes.all %}
+      <a href="{% url 'likes' board_id=board.board_id %}" style="float: left;">
+        <i class="fa-solid fa-heart"></i>
+      </a>
+      <span style="float: left;">{{ board.likes_count }}</span>
+      {% else %}
+      <a href="{% url 'likes' board_id=board.board_id %}" style="float: left;">
+        <i class="fa-regular fa-heart"></i>
+      </a>
+      <p style="float: left;">{{ board.likes_count }}</p>
+      {% endif %}
+      <br>
+      {% if board.author == request.user %}
+      <div style="display: flex;">
+        <form action="{% url 'board_edit' board_id=board.board_id %}" method="GET" style="width:100px;">
+          <input type="submit" role="button" value="수정">
+        </form>
+        {% load method_override %}
+        <form action="/board/{{ board.board_id }}/" method="POST" style="width:100px;">
+          {% csrf_token %}
+          {% method_override 'DELETE' %}
+          <input type="submit" role="button" value="삭제">
+        </form>
+      </div>
+      {% endif%}
 
         </article>
       </div>
     </div>
 
+<!-- 북마크 기능 -->
+<form action="/bookmark/{{ board.board_id }}/" method="POST">
+  {% csrf_token %}
+  <button type="submit" style="display:none;"></button>
+  {% if is_bookmarked == True %}
+  <img id="theme-toggle3" src="{% static 'imgs/bookmarked_dark.png' %}"
+    style="cursor: pointer; width: 50px; height: 50px;" alt="북마크" onclick="this.parentNode.submit();" />
+  {% else %}
+  <img id="theme-toggle4" src="{% static 'imgs/bookmark_dark.png' %}"
+    style="cursor: pointer; width: 50px; height: 50px;" alt="북마크" onclick="this.parentNode.submit();" />
+  {% endif %}
+</form>
+
+    <!-- 메시지 출력 -->
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="{{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <!-- 댓글 출력 -->
     <hr>
     {% if comments %}
       <ul>
         {% for comment in comments %}
           <li>
+            
             {{ comment.content }}
             <p>{{ comment.username }}
               |
               {{ comment.created_at }}</p>
+            <!-- 댓글 수정 -->
+            {% if comment.username == request.user %}
+              <button style="width:80px; font-size:small;" class="edit-comment-btn" onclick="showEditComment(event)"> 수정</button>
+              <form class="edit-comment-form" method="POST" action="/comment/{{ board.board_id }}/{{ comment.id }}/">
+                {% csrf_token %}
+                <label for="edit_content">내용</label>
+                <textarea id="edit_content" name="content" required="required">{{ comment.content }}</textarea>
+                <button style="width:80px; font-size:small;" type="submit">저장</button>
+              </form>
+              <form class="delete-comment-form" method="POST" action="/comment/{{ board.board_id }}/{{ comment.id}}/delete">
+                {% csrf_token%}
+                <button style="width:80px; font-size:small;" class="delete-comment-btn" type="submit"> 삭제</button>
+              </form>
+            {% endif %}
+
           </li>
         {% endfor %}
       </ul>
     {% else %}
       <p>등록된 댓글이 없습니다.</p>
     {% endif %}
-
-    <h3>댓글 작성</h3>
-    <form method="POST" action="/comment/{{ board.board_id }}/">
+    <!-- 댓글 달기 -->
+    <form method="POST" style="margin:auto; width:50%" action="/comment/{{ board.board_id }}/">
       {% csrf_token %}
-      <label for="comment">내용:</label>
-      <textarea name="content" id="comment"></textarea><br>
-      <input type="submit" value="댓글 작성">
+      <label for="comment">댓글 작성</label>
+      <textarea style="width:80%" name="content" id="comment"></textarea><br>
+      <input style="width:20%; margin:auto" type="submit" value="댓글 작성">
     </form>
   {% endblock content %}
