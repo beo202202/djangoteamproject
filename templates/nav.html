@@ -82,8 +82,30 @@
       width: 50px;
       height: 50px;
     }
+
+    .edit-comment-form {
+      display: none;
+    }
+    
+    .edit-comment-form.show {
+      display: block;
+    }
   </style>
   <script>
+    // <!-- 댓글 수정버튼 전환-->
+    function showEditComment(event) {
+      const editCommentBtns = document.querySelectorAll('.edit-comment-btn');
+
+      editCommentBtns.forEach((btn) => {
+        btn.addEventListener('click', (event) => {
+          const editCommentForm = event.target.nextElementSibling;
+          editCommentForm.style.display = editCommentForm.style.display === 'block' ? 'none' : 'block';
+        });
+      });
+
+    }
+
+
     // <!-- 테마 전환 -->
     document.addEventListener('DOMContentLoaded', function () {
       const toggleImg = document.querySelector('#theme-toggle');
@@ -136,6 +158,8 @@
         reader.readAsDataURL(input.files[0]);
       }
     };
+
+
   </script>
 
 
