@@ -30,9 +30,8 @@ def add_bookmark(request, board_id):
 class BookmarkList(LoginRequiredMixin, View):
     def get(self, request):
         bookmarks = Bookmark.objects.filter(user=request.user)
-        board_contents = [bookmark.boards.all(
-        )[0].content for bookmark in bookmarks]
-        context = {'board_contents': board_contents}
+        boards = [bookmark.boards.all()[0] for bookmark in bookmarks]
+        context = {'boards': boards, 'username': request.user.username}
         return render(request, 'bookmark/bookmark_list.html', context)
 
 # updated_at을 이용해서 최신 순으로 주르륵 떠야하고
