@@ -3,10 +3,10 @@
 
 
 <div class="container2">
-  <div class="board-list" name="프로필 띄우는 곳" style="height: 400px; background-color: red;">
+  <div class="board-list" name="프로필 띄우는 곳" style="height: 400px;">
     <div class="flex-right">
       {% if user.is_authenticated %}
-      <div>프로필 보여주기</div>
+      <div></div>
       {% else %}
       <div>
         <article style="width:500px;">
@@ -37,28 +37,32 @@
   </div>
 
 
-  <div class="board-list" style="min-width:600px; background-color: blue;" name="메인창">
+  <div class="board-list" style="min-width:600px;" name="메인창">
 
 
     <div class=" flex-center">
       <div class=" board-main">
 
         {% if user.is_authenticated %}
-        <div class="flex-center" name="글쓰기창">
-          <article style="width:500px;">
-            <form action="/board/" method="POST" enctype="multipart/form-data">
-              {% csrf_token %}
-              <textarea id="content" name="content" cols="30" rows="5" placeholder="내용" maxlength="200"
-                required></textarea>
+        <details open>
+          <summary style="text-align: right;">숨기는 버튼</summary>
 
-              <br>
-              <input type="file" name="img" id="img" accept="image/*" onchange="checkFileSize(this);">
-              <br>
-              <img id="preview" src="#" alt="Image preview" style="display:none; width:100px; max-height:100px;">
-              <input type="submit" value="작성" />
-            </form>
-          </article>
-        </div>
+          <div class="flex-center" name="글쓰기창">
+            <article style="width:500px;">
+              <form action="/board/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <textarea id="content" name="content" cols="30" rows="5" placeholder="내용" maxlength="200"
+                  required></textarea>
+
+                <br>
+                <input type="file" name="img" id="img" accept="image/*" onchange="checkFileSize(this);">
+                <br>
+                <img id="preview" src="#" alt="Image preview" style="display:none; width:100px; max-height:100px;">
+                <input type="submit" value="작성" />
+              </form>
+            </article>
+          </div>
+        </details>
         {% endif %}
 
 
@@ -100,7 +104,7 @@
     </div>
   </div>
 
-  <div class="board-list" name="태그나 다른 사람 프로필 뜨는 곳" style="height: 600px; background-color: green;">321</div>
+  <div class="board-list" name="태그나 다른 사람 프로필 뜨는 곳" style="height: 600px;"></div>
   <div class="flex-left">
   </div>
 </div>

@@ -3,10 +3,10 @@
 
 
 <div class="container2">
-    <div class="board-list" name="프로필 띄우는 곳" style="height: 400px; background-color: red;">
+    <div class="board-list" name="프로필 띄우는 곳" style="height: 400px;">
         <div class="flex-right">
             {% if user.is_authenticated %}
-            <div>프로필 보여주기</div>
+            <div></div>
             {% else %}
             <div>로그인하시오</div>
             {% endif %}
@@ -14,7 +14,7 @@
     </div>
 
 
-    <div class="board-list" style="min-width:600px; background-color: blue;" name="메인창">
+    <div class="board-list" style="min-width:600px;" name="메인창">
 
 
         <div class=" flex-center">
@@ -66,7 +66,7 @@
         </div>
     </div>
 
-    <div class="board-list" name="태그나 다른 사람 프로필 뜨는 곳" style="height: 600px; background-color: green;">321</div>
+    <div class="board-list" name="태그나 다른 사람 프로필 뜨는 곳" style="height: 600px;"></div>
 </div>
 {% endblock content%}
 
