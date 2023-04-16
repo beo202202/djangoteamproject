@@ -23,12 +23,21 @@
       display: flex;
       justify-content: center;
       align-items: center;
-
     }
 
     .center {
       display: flex;
       flex-direction: column;
+    }
+
+    .flex-right {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .flex-left {
+      display: flex;
+      justify-content: flex-start;
     }
 
     .container2 {
@@ -176,10 +185,12 @@
           <li>
             {{ user.username }}님
           </li>
+          {% if request.build_absolute_uri != "http://127.0.0.1:8000/bookmark/" %}
           <li>
             <a href="/bookmark/">
               북마크 목록</a>
           </li>
+          {% endif %}
           <li>
             <a href="/user/logout">
               로그아웃</a>
@@ -196,7 +207,6 @@
       </li>
     </ul>
     <ul>
-      <!-- <button class="contrast switcher theme-switcher" aria-label="Turn on dark mode"><i>Turn on dark mode</i></button> -->
       <div id="theme-toggle-container">
         <img id="theme-toggle" src="/static/imgs/light.png" alt="라이트 테마 이미지">
       </div>
