@@ -2,7 +2,7 @@
 {% block content %}
 
 <div class="container2">
-  <div class="board-list">
+  <div class="board-list" name="프로필 띄우는 곳">
     <div class="flex-center">
       {% if user.is_authenticated %}
       <div>프로필 보여주기</div>
@@ -11,7 +11,7 @@
       {% endif %}
     </div>
   </div>
-  <div class="board-list" style="width:600px;">
+  <div class="board-list" style="width:600px;" name="메인창">
 
 
     <div class="flex-center">
@@ -36,6 +36,7 @@
         {% endif %}
 
 
+        {% if boards %}
         {% for board in boards %}
         <div name="글리스트">
           <div class="board-info">
@@ -60,11 +61,18 @@
           </div>
         </div>
         {% endfor %}
+        {% else %}
+        <div name="글리스트">
+          <div class="board-info">
+            내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이
+            읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어
+          </div>
+        </div>
+        {% endif %}
 
       </div>
-
     </div>
-
-  <div class="board-list">321</div>
+  </div>
+  <div class="board-list" name="태그나 다른 사람 프로필 뜨는 곳" style="height: 500px; background-color: green;">321</div>
 </div>
 {% endblock content%}

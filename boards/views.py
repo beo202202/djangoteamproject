@@ -67,7 +67,7 @@ class BoardList(View):
     def get(self, request):
         if request.method == 'GET':
             boards = Board.objects.all().order_by('-updated_at')
-            
+
             return render(request, 'board/board_list.html', {'boards': boards})
         return redirect('/board/')
 
