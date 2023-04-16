@@ -5,6 +5,7 @@ from .models import Bookmark
 from django.contrib.auth.decorators import login_required
 from boards.models import Board
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 @login_required
@@ -23,15 +24,23 @@ def add_bookmark(request, board_id):
     return redirect('board_detail', board_id=board_id)
 
 
-@login_required
-class Bookmarklist(View):
+# @login_required는 해당 view함수가 실행되기 전에 인증 여부를 확인하므로,
+# View 클래스를 상속한 클래스에서는 작동하지 않는다.
+# LginRequiredMixin 클래스를 상속해야 클래스에 적용이 가능하다.
+class BookmarkList(LoginRequiredMixin, View):
     def get(self, request):
-        # form = BookmarkForm()
-
         bookmarks = Bookmark.objects.filter(user=request.user)
-        context = {'bookmarks': bookmarks}
+        board_contents = [bookmark.boards.all(
+        )[0].content for bookmark in bookmarks]
+        context = {'board_contents': board_contents}
         return render(request, 'bookmark/bookmark_list.html', context)
 
+# updated_at을 이용해서 최신 순으로 주르륵 떠야하고
+
+# img가 있다면 img도 가져오고
+# content와 updated_at도 가져오기
+# if request.method == 'GET':
+#             boards = Board.objects.all().order_by('-updated_at')
 
 # def bookmark_list(request):
 

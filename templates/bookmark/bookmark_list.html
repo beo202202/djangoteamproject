@@ -2,9 +2,12 @@
 
 {% block content %}
 <h1>북마크 목록</h1>
-
-{% for bookmark in user_bookmarks %}
-<!-- <h2>{{ bookmark.boar.user }}</h2> -->
-<p>{{ bookmark.boards.content }}</p>
+111
+{% for board_content in board_contents %}
+222
+<!-- <h2>{{ bookmark.board.user }}</h2> -->
+<p>{{ board_content }}</p>
+333
 {% endfor %}
+444
 {% endblock %}
