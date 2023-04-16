@@ -3,79 +3,109 @@
 
 
 <div class="container2">
-  <div class="board-list" name="프로필 띄우는 곳" style="height: 400px; background-color: red;">
-    <div class="flex-center">
+  <div class="board-list" name="프로필 띄우는 곳" style="height: 400px;">
+    <div class="flex-right">
       {% if user.is_authenticated %}
-      <div>프로필 보여주기</div>
+      <div></div>
       {% else %}
-      <div>로그인하시오</div>
-      {% endif %}
-    </div>
-  </div>
-
-
-  <div class="board-list" style="min-width:600px; background-color: blue;" name="메인창">
-
-
-    <div class=" flex-center">
-    <div class=" board-main">
-
-      {% if user.is_authenticated %}
-      <div class="flex-center" name="글쓰기창">
+      <div>
         <article style="width:500px;">
-          <form action="/board/" method="POST" enctype="multipart/form-data">
+          <h2 class="flex-center">로그인</h2>
+          <form method="post" action="/user/sign-in/">
             {% csrf_token %}
-            <textarea id="content" name="content" cols="30" rows="5" placeholder="내용" maxlength="200"
-              required></textarea>
-
-            <br>
-            <input type="file" name="img" id="img" accept="image/*" onchange="checkFileSize(this);">
-            <br>
-            <img id="preview" src="#" alt="Image preview" style="display:none; width:100px; max-height:100px;">
-            <input type="submit" value="작성" />
+            <div>
+              <input type="text" id="username" name="username" placeholder="유저이름">
+            </div>
+            <div>
+              <input type="password" id="password" name="password" placeholder="비밀번호">
+            </div>
+            <hr>
+            {% if error %}
+            <div role="alert">
+              {{ error }}
+            </div>
+            {% endif %}
+            <button type="submit">로그인</button>
+            <a href="/user/sign-up">회원가입 페이지로</a>
           </form>
         </article>
       </div>
-      {% endif %}
 
 
-      {% if boards %}
-      {% for board in boards %}
-      <div name="글리스트">
-        <div class="board-info">
-          <mark>{{ board.author }}</mark>님이 작성한 글입니다.
-        </div>
-        <div class="board-content">
-          <article style="width:500px;" onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'">
-            <div style="cursor: pointer; max-height:200px">
-              {% if board.img %}
-              <img src=" {{ board.img.url }}" style="width:100px;height:100px;" alt="{{ board.img.url }}">
-              {% endif %}
-              <span class="text">
-                {{ board.content }}
-              </span>
-            </div>
-            <footer>
-              <span style="float: left;"><i class="fa-solid fa-heart"></i>{{ board.likes_count }}</span>
-              <span style="float: right;">{{ board.updated_at|timesince }} 전</span>
-              <br>
-            </footer>
-          </article>
-        </div>
-      </div>
-      {% endfor %}
-      {% else %}
-      <div name="글리스트">
-        <div class="board-info">
-          내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이
-          읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어내용이 읎어
-        </div>
-      </div>
       {% endif %}
     </div>
   </div>
-</div>
 
-<div class="board-list" name="태그나 다른 사람 프로필 뜨는 곳" style="height: 600px; background-color: green;">321</div>
+
+  <div class="board-list" style="min-width:600px;" name="메인창">
+
+
+    <div class=" flex-center">
+      <div class=" board-main">
+
+        {% if user.is_authenticated %}
+        <details open>
+          <summary style="text-align: right;">숨기는 버튼</summary>
+
+          <div class="flex-center" name="글쓰기창">
+            <article style="width:500px;">
+              <form action="/board/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <textarea id="content" name="content" cols="30" rows="5" placeholder="내용" maxlength="200"
+                  required></textarea>
+
+                <br>
+                <input type="file" name="img" id="img" accept="image/*" onchange="checkFileSize(this);">
+                <br>
+                <img id="preview" src="#" alt="Image preview" style="display:none; width:100px; max-height:100px;">
+                <input type="submit" value="작성" />
+              </form>
+            </article>
+          </div>
+        </details>
+        {% endif %}
+
+
+        {% if boards %}
+        {% for board in boards %}
+        <div name="글리스트">
+          <div class="board-info">
+            <mark>{{ board.author }}</mark>님이 작성한 글입니다.
+          </div>
+          <div class="board-content">
+            <article style="width:500px;" onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'">
+              <div style="cursor: pointer; max-height:200px;">
+                {% if board.img %}
+                <img src=" {{ board.img.url }}" style="width:100px;height:100px;" alt="{{ board.img.url }}">
+                {% endif %}
+                <span class="text">
+                  {{ board.content }}
+                </span>
+              </div>
+              <footer>
+                <span style="float: left;"><i class="fa-solid fa-heart"></i>{{ board.likes_count }}</span>
+                <span style="float: right;">{{ board.updated_at|timesince }} 전</span>
+                <br>
+              </footer>
+            </article>
+          </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div name="글리스트">
+          <div class="board-info">
+            <div style="text-align: center;">
+              추가한 게시글이 없습니다.
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="board-list" name="태그나 다른 사람 프로필 뜨는 곳" style="height: 600px;"></div>
+  <div class="flex-left">
+  </div>
 </div>
 {% endblock content%}

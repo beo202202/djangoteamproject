@@ -81,9 +81,17 @@ class BoardList(View):
 def board_detail(request, board_id):
     board = Board.objects.get(board_id=board_id)
     comments = Comment.objects.filter(board=board)
+
+    is_bookmarked = False
+    if request.user.is_authenticated:
+        user_bookmarks = Bookmark.objects.filter(user=request.user)
+        if user_bookmarks.filter(boards=board).exists():
+            is_bookmarked = True
+
     # bookmarks = Bookmark.objects.filter(board_id=board_id).count
     # , 'bookmarks': bookmarks}
-    context = {'board': board, 'comments': comments}
+    context = {'board': board, 'comments': comments,
+               'is_bookmarked': is_bookmarked}
     return render(request, 'board/board_detail.html', context)
 
 
