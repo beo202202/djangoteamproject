@@ -6,10 +6,24 @@
   <div class="board-list" name="프로필 띄우는 곳" style="height: 400px;">
     <div class="flex-right">
       {% if user.is_authenticated %}
-      <div></div>
+
+        <div>
+          <article style ="width:300px; height:200px;">
+            <header>아이디 : {{ click_user.username }}</header>         
+            소개: {{ click_user.bio }}
+          </article>
+
+            {% if show_my_board == True %}
+          <article>
+            <a href="/mypage/profile_modify" class="card-link">[프로필 수정]</a>
+          </article>
+        </div>
+        {% endif %}
+
+
       {% else %}
       <div>
-        <article style="width:500px;">
+        <article style="width:300px;">
           <h2 class="flex-center">로그인</h2>
           <form method="post" action="/user/sign-in/">
             {% csrf_token %}
@@ -37,7 +51,7 @@
   </div>
 
 
-  <div class="board-list" style="min-width:600px;" name="메인창">
+  <div class="board-list" style="min-width:1000px;" name="메인창">
 
 
     <div class=" flex-center">
@@ -48,7 +62,7 @@
           <summary style="text-align: right;">숨기는 버튼</summary>
 
           <div class="flex-center" name="글쓰기창">
-            <article style="width:500px;">
+            <article style="width:1000px;">
               <form action="/board/" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <textarea id="content" name="content" cols="30" rows="5" placeholder="내용" maxlength="200"
@@ -73,7 +87,7 @@
             <mark>{{ board.author }}</mark>님이 작성한 글입니다.
           </div>
           <div class="board-content">
-            <article style="width:500px;" onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'">
+            <article style="width:1000px;" onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'">
               <div style="cursor: pointer; max-height:200px;">
                 {% if board.img %}
                 <img src=" {{ board.img.url }}" style="width:100px;height:100px;" alt="{{ board.img.url }}">

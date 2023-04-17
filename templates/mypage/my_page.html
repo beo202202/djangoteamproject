@@ -1,41 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>home</title>
-</head>
-<body>
-<div class="card-body">
-    <h5 class="card-title">{{ click_user.username }}</h5>
-    <p class="card-text"> {{ click_user.bio }}</p>
+{% extends 'nav.html' %}
+{% block content %}
+<div style="display: flex; justify-content: center; align-items: center;">
+    <article style ="width:500px; ">
+    <header style = "height:200px;">아이디
+    <p>{{ click_user.username }}</p></header>
+    <p>소개<p>
+    <p> {{ click_user.bio }}</p>
     {% if show_my_board == True %}
+    <footer>
         <a href="/mypage/profile_modify" class="card-link">[프로필 수정]</a>
+    </footer>
     {% endif %}
-
-
+    </article>
+  </div>
 </div>
 
+<details open><summary>{{ click_user.username }}이 작성한 글</summary>
+    
 {% for board in board_list %}
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">{{ board.title }}</h5>
-            <p class="card-text">
-                등록 시간 {{ board.created_at }} , 수정 시간 {{ board.updated_at }}
-            </p>
-            {% if show_my_board == True %}
-                <a href="/board/edit/{{ board.board_id }}" class="card-link">[수정]</a>
-                
-
-                {% load method_override %}
-                <form action="/board/{{ board.board_id }}/" method="POST">
-                    {% csrf_token %}
-        
-                    {% method_override 'DELETE' %}
-                    <input type="submit" role="button" value="삭제">
-                </form>
-            {% endif %}
-    </div>
+<div name="글리스트">
+  <div class="board-info">
+    <mark>{{ board.author }}</mark>님이 작성한 글입니다.
+  </div>
+  <div class="board-content">
+    <article style="width:500px;" onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'">
+      <div style="cursor: pointer; max-height:200px;">
+        {% if board.img %}
+        <img src=" {{ board.img.url }}" style="width:100px;height:100px;" alt="{{ board.img.url }}">
+        {% endif %}
+        <span class="text">
+          {{ board.content }}
+        </span>
+      </div>
+      <footer>
+        <span style="float: left;"><i class="fa-solid fa-heart"></i>{{ board.likes_count }}</span>
+        <span style="float: right;">{{ board.updated_at|timesince }} 전</span>
+        <br>
+      </footer>
+    </article>
+  </div>
+</div>
 {% endfor %}
+{% comment %} {% else %}
+<div name="글리스트">
+  <div class="board-info">
+    <div style="text-align: center;">
+      추가한 게시글이 없습니다.
+    </div>
+  </div>
+</div>
+{% endif %} {% endcomment %}
 
-</body>
-</html>
+{% endblock content %}
+</details>

@@ -14,7 +14,7 @@
     </div>
 
 
-    <div class="board-list" style="min-width:600px;" name="메인창">
+    <div class="board-list" style="min-width:800px;" name="메인창">
 
 
         <div class=" flex-center">
@@ -30,7 +30,7 @@
                         <mark>{{ username }}</mark>님이 작성한 글입니다.
                     </div>
                     <div class="board-content">
-                        <article style="width:500px;"
+                        <article style="width:800px;"
                             onclick="location.href='{% url 'board_detail' board_id=board.board_id %}'">
                             <div style="cursor: pointer; max-height:200px">
                                 {% if board.img %}

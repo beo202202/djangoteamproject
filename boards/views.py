@@ -12,6 +12,7 @@ import os
 from PIL import Image
 from comments.models import Comment
 from bookmarks.models import Bookmark
+from user.models import UserModel
 
 
 # Create your views here.
@@ -68,8 +69,27 @@ class BoardList(View):
     def get(self, request):
         if request.method == 'GET':
             boards = Board.objects.all().order_by('-updated_at')
+            
+            if request.user.is_authenticated:
+                me = request.user.id
+                click_user = UserModel.objects.get(id=me)
+                board_list = Board.objects.all().filter(author_id=me)            
+                if me == request.user.id:
+                    show_my_board = True
+                else:
+                    show_my_board = False
+                context = {
+                    'boards': boards,
+                    'click_user': click_user,
+                    'board_list': board_list,
+                    'show_my_board': show_my_board
+                }
+            else:
+                context = {
+                    'boards': boards,
+                }
 
-            return render(request, 'board/board_list.html', {'boards': boards})
+            return render(request, 'board/board_list.html', context)
         return redirect('/board/')
 
 
