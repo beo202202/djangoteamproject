@@ -6,7 +6,21 @@
   <div class="board-list" name="프로필 띄우는 곳" style="height: 400px;">
     <div class="flex-right">
       {% if user.is_authenticated %}
-      <div></div>
+
+        <div>
+          <article style ="width:300px; height:200px;">
+            <header>아이디 : {{ click_user.username }}</header>         
+            소개: {{ click_user.bio }}
+          </article>
+
+            {% if show_my_board == True %}
+          <article>
+            <a href="/mypage/profile_modify" class="card-link">[프로필 수정]</a>
+          </article>
+        </div>
+        {% endif %}
+
+
       {% else %}
       <div>
         <article style="width:300px;">

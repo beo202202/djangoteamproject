@@ -1,8 +1,8 @@
 {% extends 'nav.html' %}
 {% block content %}
-<div style="display: flex; justify-content: center; align-items: center;}">
+<div style="display: flex; justify-content: center; align-items: center;">
     <article style ="width:500px; ">
-    <header style = "heigth:200px;">아이디
+    <header style = "height:200px;">아이디
     <p>{{ click_user.username }}</p></header>
     <p>소개<p>
     <p> {{ click_user.bio }}</p>
@@ -11,10 +11,12 @@
         <a href="/mypage/profile_modify" class="card-link">[프로필 수정]</a>
     </footer>
     {% endif %}
-    </article></div>
-<details open><summary>내가 쓴 글</summary>
-    
+    </article>
+  </div>
 </div>
+
+<details open><summary>{{ click_user.username }}이 작성한 글</summary>
+    
 {% for board in board_list %}
 <div name="글리스트">
   <div class="board-info">
