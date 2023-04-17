@@ -36,10 +36,8 @@ def update(request):
         if form.is_valid():
             form.save()
 
-        context = {
-            'form': form,
-        }
-        return render(request, 'mypage/profile_modify.html', context)
+       
+        return redirect('/board/list')
     else:
         form = CustomUserChangeForm(instance=request.user)
         context = {
